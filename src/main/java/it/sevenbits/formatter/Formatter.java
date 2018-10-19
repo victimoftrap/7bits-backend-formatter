@@ -76,6 +76,7 @@ public class Formatter {
                 removeSpacesFrom(stringBuilder.length()-2, stringBuilder);
                 makeNewLineAt(stringBuilder.length()-1, stringBuilder);
                 makeNewLine(stringBuilder);
+                i = preventSpaces(source, i);
                 // checkedIndex = stringBuilder.length();
             }
             if (source.charAt(i) == SEMICOLON) {
@@ -84,6 +85,8 @@ public class Formatter {
                 // checkedIndex = stringBuilder.length();
             }
         }
+        indentLevel = 0;
+        checkedIndex = 0;
         return stringBuilder.toString();
     }
 }
