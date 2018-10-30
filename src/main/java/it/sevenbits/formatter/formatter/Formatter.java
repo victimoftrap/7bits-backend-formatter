@@ -1,92 +1,102 @@
-package it.sevenbits.formatter;
+package it.sevenbits.formatter.formatter;
 
+import it.sevenbits.formatter.readers.IReader;
+import it.sevenbits.formatter.writers.IWriter;
+
+import java.io.IOException;
+
+/**
+ * Class that formats code by code style rules
+ * */
 public class Formatter {
+    private final int INDENT_LENGTH = 4;
     private final String EXTRA_SPACE = "    ";
     private final char LCBRACE = '{';
     private final char RCBRACE = '}';
     private final char SEMICOLON = ';';
     private final char COMMA = ',';
     private final char SPACE = ' ';
+    private final char PRIME = '\'';
+    private final char DOUBLE_PRIME = '\"';
     private final char CARRIAGE_RETURN = '\n';
-    private int checkedIndex;
+
     private int indentLevel;
+    private boolean itsAString = false;
+    private boolean writeMe = true;
+    private boolean needNewLine = false;
 
-    private void makeIndent(StringBuilder sb) {
+    /**
+     * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
+     * @param writer - instance of IWriter
+     * */
+    private void makeIndent(IWriter writer) throws IOException {
         for (int i = 0; i < indentLevel; i++) {
-            sb.append(EXTRA_SPACE);
+            for (int j = 0; j < INDENT_LENGTH; j++) {
+                writer.write(SPACE);
+            }
         }
     }
 
-    private void makeIndentAt(int index, StringBuilder sb) {
-        for (int i = 0; i < indentLevel; i++) {
-            sb.insert(index, EXTRA_SPACE);
-        }
+    /**
+     * Make new line in IWriter several times
+     * @param writer - instance of IWriter
+     * */
+    private void makeNewLine(IWriter writer) throws IOException {
+        writer.write(CARRIAGE_RETURN);
+        makeIndent(writer);
     }
 
-    private void makeNewLine(StringBuilder sb) {
-        sb.append(CARRIAGE_RETURN);
-        makeIndent(sb);
-    }
+    /**
+     * Method that formats code
+     * @param reader - instance that contains code for formatting
+     * @param writer - instance where we would write formatted code
+     * */
+    public void format(IReader reader, IWriter writer) throws IOException {
+        itsAString = false;
+        needNewLine = false;
+        writeMe = true;
+        char currentSymbol = 0;
 
-    private void makeNewLineAt(int index, StringBuilder sb) {
-        sb.insert(index, CARRIAGE_RETURN);
-        makeIndentAt(index+1, sb);
-    }
-
-    private int removeSpacesFrom(int index, StringBuilder sb) {
-        int startIndex = index;
-        while (startIndex > checkedIndex && sb.charAt(startIndex) == SPACE || sb.charAt(startIndex) == CARRIAGE_RETURN) {
-            startIndex--;
-        }
-        if (startIndex != index) {
-            sb.delete(startIndex+1, index+1);
-        }
-        return startIndex+1;
-    }
-
-    private int preventSpaces(String source, int from) {
-        if (source.length() == from+1) {
-            return from;
-        }
-        while (source.charAt(from+1) == SPACE || source.charAt(from+1) == CARRIAGE_RETURN) {
-            from++;
-        }
-        return from;
-    }
-
-    public String format(String source) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (int i = 0; i < source.length(); i++) {
-            stringBuilder.append(source.charAt(i));
-
-            if (source.charAt(i) == LCBRACE) {
-                indentLevel++;
-                int index = i;
-                if (i != 0) {
-                     index = removeSpacesFrom(stringBuilder.lastIndexOf(String.valueOf(LCBRACE))-1, stringBuilder);
+        while (reader.hasNext()) {
+            currentSymbol = reader.read();
+            if (!itsAString) {
+                while (reader.hasNext() && currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN) {
+                    currentSymbol = reader.read();
                 }
-                stringBuilder.insert(index, SPACE);
-                makeNewLineAt(index+2, stringBuilder);
-                checkedIndex = stringBuilder.length();
-                i = preventSpaces(source, i);
+                if (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN && !reader.hasNext()) {
+                    break;
+                }
             }
-            if (source.charAt(i) == RCBRACE) {
+            writeMe = true;
+            if (currentSymbol == LCBRACE) {
+                indentLevel++;
+                writer.write(SPACE);
+                writer.write(LCBRACE);
+                makeNewLine(writer);
+                writeMe = false;
+            }
+            if (currentSymbol == SEMICOLON) {
+                writer.write(SEMICOLON);
+                writeMe = false;
+                needNewLine = true;
+            }
+            if (currentSymbol == RCBRACE) {
                 indentLevel--;
-                removeSpacesFrom(stringBuilder.length()-2, stringBuilder);
-                makeNewLineAt(stringBuilder.length()-1, stringBuilder);
-                makeNewLine(stringBuilder);
-                i = preventSpaces(source, i);
-                // checkedIndex = stringBuilder.length();
+                makeNewLine(writer);
+                writer.write(RCBRACE);
+                writeMe = false;
+                needNewLine = true;
             }
-            if (source.charAt(i) == SEMICOLON) {
-                i = preventSpaces(source, i);
-                makeNewLineAt(stringBuilder.length(), stringBuilder);
-                // checkedIndex = stringBuilder.length();
+            if (currentSymbol == DOUBLE_PRIME) {
+                itsAString = !itsAString;
+            }
+            if (writeMe) {
+                if (needNewLine) {
+                    makeNewLine(writer);
+                    needNewLine = false;
+                }
+                writer.write(currentSymbol);
             }
         }
-        indentLevel = 0;
-        checkedIndex = 0;
-        return stringBuilder.toString();
     }
 }
