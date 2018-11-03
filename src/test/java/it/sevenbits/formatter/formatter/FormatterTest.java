@@ -26,14 +26,14 @@ public class FormatterTest {
         IReader reader = new StringReader(str1Before);
         IWriter writer = new StringWriter();
         formatter.format(reader, writer);
-        assertEquals(writer.toString(), str1After);
+        assertEquals(str1After, writer.toString());
 
-        String str2Before = "aaa   {   x;     y;  aaa{  z;  }  y;   }x;";
-        String str2After = "aaa {\n    x;\n    y;\n    aaa {\n        z;\n    }\n    y;\n}\nx;";
+        String str2Before = "void   f()  {  \n\n char x='c'  \n\n  ;     \n  auto \ny=x;if(x=='c') \n{  int z=7;  }  y++;\n   \n}\n\nx='\0';";
+        String str2After = "void f() {\n    char x='c';\n    auto y=x;\n    if(x=='c') {\n        int z=7;\n    }\n    y++;\n}\nx='\0';";
         reader = new StringReader(str2Before);
         writer = new StringWriter();
         formatter.format(reader, writer);
-        assertEquals(writer.toString(), str2After);
+        assertEquals(str2After, writer.toString());
     }
 
     @Test
@@ -43,15 +43,22 @@ public class FormatterTest {
         IReader reader = new StringReader(str1Before);
         IWriter writer = new StringWriter();
         formatter.format(reader, writer);
-        assertEquals(writer.toString(), str1After);
+        assertEquals(str1After, writer.toString());
+
+        String str2Before = "public static void main(String[] args){int a=0;int b=1;}";
+        String str2After = "public static void main(String[] args) {\n    int a=0;\n    int b=1;\n}";
+        reader = new StringReader(str2Before);
+        writer = new StringWriter();
+        formatter.format(reader, writer);
+        assertEquals(str2After, writer.toString());
     }
 
     @Test
     public void testNoFormat() throws IOException {
-        String str = "aaa {\n    bb;\n    cc;\n}\ndd;";
+        String str = "void g() {\n    int b=100;\n    char c='c';\n}\naaa;";
         IReader reader = new StringReader(str);
         IWriter writer = new StringWriter();
         formatter.format(reader, writer);
-        assertEquals(writer.toString(), str);
+        assertEquals(str, writer.toString());
     }
 }
