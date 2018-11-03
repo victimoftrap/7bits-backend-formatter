@@ -18,12 +18,11 @@ public class Formatter {
     private final char SPACE = ' ';
     private final char PRIME = '\'';
     private final char DOUBLE_PRIME = '\"';
+    private final char SIGN_EQUALS = '=';
+    private final char SIGN_PLUS = '+';
     private final char CARRIAGE_RETURN = '\n';
 
     private int indentLevel;
-    private boolean itsAString = false;
-    private boolean writeMe = true;
-    private boolean needNewLine = false;
 
     /**
      * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
@@ -52,51 +51,70 @@ public class Formatter {
      * @param writer - instance where we would write formatted code
      * */
     public void format(IReader reader, IWriter writer) throws IOException {
-        itsAString = false;
-        needNewLine = false;
-        writeMe = true;
+        boolean significantBefore = true;
+        boolean significantNow = false;
+        boolean needNewLine = false;
+        boolean needSpace = false;
+
+        boolean itsAString = false;
         char currentSymbol = 0;
 
         while (reader.hasNext()) {
             currentSymbol = reader.read();
-            if (!itsAString) {
-                while (reader.hasNext() && currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN) {
-                    currentSymbol = reader.read();
-                }
-                if (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN && !reader.hasNext()) {
-                    break;
+
+            needSpace = false;
+            if (currentSymbol == SPACE) {
+                if (!itsAString) {
+                    while (reader.hasNext() && (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN)) {
+                        currentSymbol = reader.read();
+                        needSpace = true;
+                    }
+                    if (!reader.hasNext() && (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN)) {
+                        break;
+                    }
                 }
             }
-            writeMe = true;
+
+            if (currentSymbol == CARRIAGE_RETURN) {
+                significantNow = true;
+            }
             if (currentSymbol == LCBRACE) {
                 indentLevel++;
                 writer.write(SPACE);
                 writer.write(LCBRACE);
                 makeNewLine(writer);
-                writeMe = false;
+                significantNow = true;
             }
             if (currentSymbol == SEMICOLON) {
                 writer.write(SEMICOLON);
-                writeMe = false;
                 needNewLine = true;
+                significantNow = true;
             }
             if (currentSymbol == RCBRACE) {
                 indentLevel--;
                 makeNewLine(writer);
                 writer.write(RCBRACE);
-                writeMe = false;
                 needNewLine = true;
+                significantNow = true;
             }
+
             if (currentSymbol == DOUBLE_PRIME) {
                 itsAString = !itsAString;
             }
-            if (writeMe) {
+
+            if (!significantNow) {
+                if (!significantBefore && needSpace) {
+                    writer.write(SPACE);
+                }
                 if (needNewLine) {
                     makeNewLine(writer);
                     needNewLine = false;
                 }
                 writer.write(currentSymbol);
             }
+
+            significantBefore = significantNow;
+            significantNow = false;
         }
     }
 }
