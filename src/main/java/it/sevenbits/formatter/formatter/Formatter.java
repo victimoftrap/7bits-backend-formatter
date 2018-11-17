@@ -1,5 +1,6 @@
 package it.sevenbits.formatter.formatter;
 
+import it.sevenbits.formatter.exceptions.RWStreamException;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 
@@ -28,7 +29,7 @@ public class Formatter {
      * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
      * @param writer - instance of IWriter
      * */
-    private void makeIndent(IWriter writer) throws IOException {
+    private void makeIndent(IWriter writer) throws RWStreamException {
         for (int i = 0; i < indentLevel; i++) {
             for (int j = 0; j < INDENT_LENGTH; j++) {
                 writer.write(SPACE);
@@ -40,7 +41,7 @@ public class Formatter {
      * Make new line in IWriter several times
      * @param writer - instance of IWriter
      * */
-    private void makeNewLine(IWriter writer) throws IOException {
+    private void makeNewLine(IWriter writer) throws RWStreamException {
         writer.write(CARRIAGE_RETURN);
         makeIndent(writer);
     }
@@ -50,7 +51,7 @@ public class Formatter {
      * @param reader - instance that contains code for formatting
      * @param writer - instance where we would write formatted code
      * */
-    public void format(IReader reader, IWriter writer) throws IOException {
+    public void format(IReader reader, IWriter writer) throws RWStreamException {
         boolean significantBefore = true;
         boolean significantNow = false;
         boolean needNewLine = false;

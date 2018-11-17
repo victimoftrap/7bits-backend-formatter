@@ -27,7 +27,7 @@ public class StringWriter implements IWriter {
      * Return string value of stream
      * @return string value of stream
      * */
-    public String toString() {
+    public String convertToString() {
         return stringBuilder.toString();
     }
 }

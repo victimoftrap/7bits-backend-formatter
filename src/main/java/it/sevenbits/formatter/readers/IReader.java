@@ -1,5 +1,7 @@
 package it.sevenbits.formatter.readers;
 
+import it.sevenbits.formatter.exceptions.RWStreamException;
+
 import java.io.IOException;
 
 /**
@@ -16,7 +18,7 @@ public interface IReader {
     /**
      * Method that reads character from stream
      * @return character from stream
-     * @throws IOException if it was some problem with stream
+     * @throws RWStreamException if it was some problem with stream
      * */
-    char read() throws IOException;
+    char read() throws RWStreamException;
 }

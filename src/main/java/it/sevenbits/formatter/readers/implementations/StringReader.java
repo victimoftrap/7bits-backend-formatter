@@ -1,5 +1,6 @@
 package it.sevenbits.formatter.readers.implementations;
 
+import it.sevenbits.formatter.exceptions.RWStreamException;
 import it.sevenbits.formatter.readers.IReader;
 
 /**
@@ -34,10 +35,10 @@ public class StringReader implements IReader {
      * Read character in current position and increase position if string has more characters
      * @return character in current position
      * */
-    public char read() {
+    public char read() throws RWStreamException {
         if (hasNext()) {
             return source.charAt(position++);
         }
-        return source.charAt(position);
+        throw new RWStreamException("Stream are empty");
     }
 }
