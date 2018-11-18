@@ -1,15 +1,14 @@
-package it.sevenbits.formatter.formatter;
+package it.sevenbits.formatter.formatter.implementations;
 
-import it.sevenbits.formatter.exceptions.RWStreamException;
+import it.sevenbits.formatter.formatter.Formatting;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
-
-import java.io.IOException;
+import it.sevenbits.formatter.exceptions.RWStreamException;
 
 /**
  * Class that formats code by code style rules
  * */
-public class Formatter {
+public class Formatter implements Formatting {
     private final int INDENT_LENGTH = 4;
     private final String EXTRA_SPACE = "    ";
     private final char LCBRACE = '{';
