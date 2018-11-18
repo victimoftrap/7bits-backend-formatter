@@ -20,6 +20,14 @@ public class RWStreamException extends Exception {
 
     /**
      * Exception constructor
+     * @param throwable - previous exception
+     * */
+    public RWStreamException(Throwable throwable) {
+        super(throwable);
+    }
+
+    /**
+     * Exception constructor
      * @param s - description message
      * @param throwable - previous exception
      * */
