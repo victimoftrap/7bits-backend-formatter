@@ -19,8 +19,11 @@ public class Lexer implements ILexer {
     private final char SPACE = ' ';
     private IReader reader;
     private Map<Character, IToken> separators;
-    private char remember;
+    private char currentChar;
     private boolean glueSituation;
+
+    private boolean lastChild;
+    private char previousChar;
 
     /**
      * Forbidden empty constructor
@@ -41,14 +44,52 @@ public class Lexer implements ILexer {
     }
 
     /**
+     * Creates new token if
+     * @return token
+     * */
+    private IToken createToken(StringBuilder accumulator) {
+        IToken token = separators.get(previousChar);
+        if (token != null) {
+            return token;
+        } else {
+            return new Token("ID_OR_KEYWORD", accumulator.toString());
+        }
+    }
+
+    /**
      * Reads token from source
      * @return next IToken
      * */
     @Override
     public IToken readToken() {
         StringBuilder sb = new StringBuilder();
+
         try {
             while (hasNext()) {
+                if (currentChar != 0) {
+                    previousChar = currentChar;
+                    sb.append(currentChar);
+                }
+                if (lastChild) {
+                    lastChild = false;
+                    return createToken(sb);
+                }
+
+                currentChar = reader.read();
+                if (currentChar == SPACE) {
+                    while (currentChar == SPACE && reader.hasNext()) {
+                        currentChar = reader.read();
+                    }
+                    if (sb.length() != 0) {
+                        if (!hasNext()) {
+                            lastChild = true;
+                        }
+                        return createToken(sb);
+                    }
+                }
+            }
+
+            /*while (hasNext()) {
                 if (glueSituation) {
                     glueSituation = false;
                     IToken token = separators.get(remember);
@@ -76,7 +117,7 @@ public class Lexer implements ILexer {
                     return token;
                 }
                 sb.append(remember);
-            }
+            }*/
             /*if (remember != 0) {
                 return separators.get(remember);
             }*/
@@ -92,6 +133,6 @@ public class Lexer implements ILexer {
      * */
     @Override
     public boolean hasNext() {
-        return reader.hasNext();
+        return reader.hasNext() || lastChild;
     }
 }
