@@ -1,13 +1,14 @@
 package it.sevenbits.formatter.lexer.implementations;
 
-import it.sevenbits.formatter.exceptions.RWStreamException;
 import it.sevenbits.formatter.lexer.ILexer;
+import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
-import it.sevenbits.formatter.readers.IReader;
+import it.sevenbits.formatter.exceptions.LexerException;
+import it.sevenbits.formatter.exceptions.RWStreamException;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Class of lexer analyzer
@@ -21,6 +22,7 @@ public class Lexer implements ILexer {
     private final char SQUARE_RIGHT_BRACKET = ']';
     private final char SEMICOLON = ';';
     private final char SPACE = ' ';
+    private final char CARRIAGE_RETURN = '\n';
     private final char QUOTATION_MARK = '\"';
     private final char APOSTROPHE = '\'';
 
@@ -32,6 +34,8 @@ public class Lexer implements ILexer {
     private boolean lastChild;
     private char previousChar;
     private IToken nextToken;
+
+    private boolean stringLiteral;
 
     /**
      * Forbidden empty constructor
@@ -70,9 +74,10 @@ public class Lexer implements ILexer {
     /**
      * Reads token from source
      * @return next IToken
+     * @throws LexerException if some trouble happen
      * */
     @Override
-    public IToken readToken() {
+    public IToken readToken() throws LexerException {
         StringBuilder sb = new StringBuilder();
 
         try {
@@ -87,38 +92,48 @@ public class Lexer implements ILexer {
                 }
 
                 currentChar = reader.read();
-                while (currentChar == SPACE && reader.hasNext()) {
-                    currentChar = reader.read();
+
+                if (currentChar == SPACE || currentChar == CARRIAGE_RETURN) {
+                    while (hasNext() && (currentChar == SPACE || currentChar == CARRIAGE_RETURN)) {
+                        currentChar = reader.read();
+                    }
+                    if (sb.length() != 0) {
+                        nextToken = separators.get(currentChar);
+                        if (nextToken != null) {
+                            glueSituation = true;
+                        }
+                        glueSituation = false;
+                        return createToken(sb);
+                    }
+                }
+
+                if (!hasNext()) {
+                    lastChild = true;
                 }
 
                 if (glueSituation) {
                     glueSituation = false;
                     IToken token = nextToken;
                     nextToken = null;
-                    return token;
-                }
 
-                if (currentChar == SPACE) {
-                    while (currentChar == SPACE && reader.hasNext()) {
-                        currentChar = reader.read();
+                    nextToken = separators.get(currentChar);
+                    if (nextToken != null) {
+                        glueSituation = true;
                     }
-                    if (sb.length() != 0) {
-                        return createToken(sb);
-                    }
+
+                    return token;
                 }
 
                 nextToken = separators.get(currentChar);
                 if (nextToken != null) {
                     glueSituation = true;
-                    return createToken(sb);
-                }
-
-                if (!hasNext() ){ // && currentChar != SPACE) {
-                    lastChild = true;
+                    if (sb.length() > 0) {
+                        return createToken(sb);
+                    }
                 }
             }
         } catch (RWStreamException e) {
-            e.printStackTrace();
+            throw new LexerException("Some trouble with reader content", e);
         }
         return null;
     }
