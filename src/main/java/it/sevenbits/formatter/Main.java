@@ -1,15 +1,15 @@
 package it.sevenbits.formatter;
 
-import it.sevenbits.formatter.exceptions.RWStreamException;
-import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.lexer.token.IToken;
+import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.readers.implementations.StringReader;
+import it.sevenbits.formatter.exceptions.LexerException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws RWStreamException {
+    public static void main(String[] args) throws LexerException {
         /*Formatter formatter = new Formatter();
         String str2 = "aaa   {   bb;   cc;   aaa   {   dd;     }   ee;}";
         String str3 = "aaa   {   x;  y;   aaa  {y;  aaa{    }}z;   }x;";
@@ -19,10 +19,13 @@ public class Main {
         IWriter writer = new StringWriter();
         formatter.format(reader, writer);
         System.out.println(writer.toString());*/
-        Lexer lex = new Lexer(new StringReader("  x;  "));
+        Lexer lex = new Lexer(new StringReader("  {  \"h\"   ;  }  "));
         List<IToken> tokens = new ArrayList<>();
         while (lex.hasNext()) {
             tokens.add(lex.readToken());
         }
+//        while (lex.hasNext()) {
+//            System.out.println(lex.readToken().getLexeme());
+//        }
     }
 }
