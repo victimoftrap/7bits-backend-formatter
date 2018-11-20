@@ -1,9 +1,9 @@
 package it.sevenbits.formatter.formatter;
 
 import it.sevenbits.formatter.exceptions.RWStreamException;
+import it.sevenbits.formatter.formatter.implementations.Formatter;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.readers.implementations.StringReader;
-import it.sevenbits.formatter.writers.IWriter;
 import it.sevenbits.formatter.writers.implementations.StringWriter;
 import org.junit.Before;
 import org.junit.Test;

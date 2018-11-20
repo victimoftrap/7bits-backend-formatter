@@ -13,10 +13,17 @@ import java.util.Map;
  * Class of lexer analyzer
  * */
 public class Lexer implements ILexer {
-    private final char LCBRACE = '{';
-    private final char RCBRACE = '}';
+    private final char CURLY_LEFT_BRACKET = '{';
+    private final char CURLY_RIGHT_BRACKET = '}';
+    private final char ROUND_LEFT_BRACKET = '(';
+    private final char ROUND_RIGHT_BRACKET = ')';
+    private final char SQUARE_LEFT_BRACKET = '[';
+    private final char SQUARE_RIGHT_BRACKET = ']';
     private final char SEMICOLON = ';';
     private final char SPACE = ' ';
+    private final char QUOTATION_MARK = '\"';
+    private final char APOSTROPHE = '\'';
+
     private IReader reader;
     private Map<Character, IToken> separators;
     private char currentChar;
@@ -24,6 +31,7 @@ public class Lexer implements ILexer {
 
     private boolean lastChild;
     private char previousChar;
+    private IToken nextToken;
 
     /**
      * Forbidden empty constructor
@@ -38,13 +46,16 @@ public class Lexer implements ILexer {
     public Lexer(IReader reader) {
         this.reader = reader;
         separators = new HashMap<>();
-        separators.put(LCBRACE, new Token("LEFT BRACE", "{"));
-        separators.put(RCBRACE, new Token("RIGHT BRACE", "}"));
+        separators.put(CURLY_LEFT_BRACKET, new Token("CURLY LEFT BRACKET", "{"));
+        separators.put(CURLY_RIGHT_BRACKET, new Token("CURLY RIGHT BRACKET", "}"));
+        separators.put(ROUND_LEFT_BRACKET, new Token("ROUND LEFT BRACKET", "("));
+        separators.put(ROUND_RIGHT_BRACKET, new Token("ROUND RIGHT BRACKET", ")"));
         separators.put(SEMICOLON, new Token("SEMICOLON", ";"));
     }
 
     /**
-     * Creates new token if
+     * Creates new token if previously reading char wasn't a lexeme or returns created previously token
+     * @param accumulator with some string
      * @return token
      * */
     private IToken createToken(StringBuilder accumulator) {
@@ -52,7 +63,7 @@ public class Lexer implements ILexer {
         if (token != null) {
             return token;
         } else {
-            return new Token("ID_OR_KEYWORD", accumulator.toString());
+            return new Token("ID OR KEYWORD", accumulator.toString());
         }
     }
 
@@ -76,51 +87,36 @@ public class Lexer implements ILexer {
                 }
 
                 currentChar = reader.read();
+                while (currentChar == SPACE && reader.hasNext()) {
+                    currentChar = reader.read();
+                }
+
+                if (glueSituation) {
+                    glueSituation = false;
+                    IToken token = nextToken;
+                    nextToken = null;
+                    return token;
+                }
+
                 if (currentChar == SPACE) {
                     while (currentChar == SPACE && reader.hasNext()) {
                         currentChar = reader.read();
                     }
                     if (sb.length() != 0) {
-                        if (!hasNext()) {
-                            lastChild = true;
-                        }
                         return createToken(sb);
                     }
                 }
+
+                nextToken = separators.get(currentChar);
+                if (nextToken != null) {
+                    glueSituation = true;
+                    return createToken(sb);
+                }
+
+                if (!hasNext() ){ // && currentChar != SPACE) {
+                    lastChild = true;
+                }
             }
-
-            /*while (hasNext()) {
-                if (glueSituation) {
-                    glueSituation = false;
-                    IToken token = separators.get(remember);
-                    remember = 0;
-                    return token;
-                }
-
-                remember = reader.read();
-                if (remember == SPACE) {
-                    while (reader.hasNext() && remember == SPACE) {
-                        remember = reader.read();
-                    }
-                    if (sb.length() != 0) {
-                        return new Token("ID_OR_KEYWORD", sb.toString().trim());
-                    }
-                }
-
-                if (remember == LCBRACE || remember == RCBRACE || remember == SEMICOLON) {
-                    if (sb.length() != 0) {
-                        glueSituation = true;
-                        return new Token("ID_OR_KEYWORD", sb.toString().trim());
-                    }
-                    IToken token = separators.get(remember);
-                    remember = 0;
-                    return token;
-                }
-                sb.append(remember);
-            }*/
-            /*if (remember != 0) {
-                return separators.get(remember);
-            }*/
         } catch (RWStreamException e) {
             e.printStackTrace();
         }
