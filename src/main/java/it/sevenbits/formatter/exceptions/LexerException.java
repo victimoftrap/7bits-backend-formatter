@@ -14,7 +14,7 @@ public class LexerException extends Exception {
      * Exception constructor
      * @param s - description message
      * */
-    public LexerException(String s) {
+    public LexerException(final String s) {
         super(s);
     }
 
@@ -23,7 +23,7 @@ public class LexerException extends Exception {
      * @param s - description message
      * @param throwable - previous exception
      * */
-    public LexerException(String s, Throwable throwable) {
+    public LexerException(final String s, final Throwable throwable) {
         super(s, throwable);
     }
 
@@ -31,7 +31,7 @@ public class LexerException extends Exception {
      * Exception constructor
      * @param throwable - previous exception
      * */
-    public LexerException(Throwable throwable) {
+    public LexerException(final Throwable throwable) {
         super(throwable);
     }
 }

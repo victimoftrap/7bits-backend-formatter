@@ -1,37 +1,37 @@
 package it.sevenbits.formatter.exceptions;
 
 /**
- * Exception class for IReader and IWriter
+ * Exception for BasicFormatter
  * */
-public class RWStreamException extends Exception {
+public class FormatterException extends Exception {
     /**
      * Default exception constructor
      * */
-    public RWStreamException() {
+    public FormatterException() {
     }
 
     /**
      * Exception constructor
      * @param s - description message
      * */
-    public RWStreamException(final String s) {
+    public FormatterException(final String s) {
         super(s);
     }
 
     /**
      * Exception constructor
+     * @param s - description message
      * @param throwable - previous exception
      * */
-    public RWStreamException(final Throwable throwable) {
-        super(throwable);
+    public FormatterException(final String s, final Throwable throwable) {
+        super(s, throwable);
     }
 
     /**
      * Exception constructor
-     * @param s - description message
      * @param throwable - previous exception
      * */
-    public RWStreamException(final String s, final Throwable throwable) {
-        super(s, throwable);
+    public FormatterException(final Throwable throwable) {
+        super(throwable);
     }
 }
