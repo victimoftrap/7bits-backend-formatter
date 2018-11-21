@@ -186,7 +186,7 @@ public class LexerTest {
 
     @Test
     public void test9() throws LexerException {
-        Lexer lex = new Lexer(new StringReader("\n   int    f  \n\n\n    (   char  \n    x )    {    return  \n   x     ;   }   \n"));
+        Lexer lex = new Lexer(new StringReader("\n   int    f  \n\n\n    (   char  \n    x )    {    return  \n   x     ;      }"));
         IToken token0 = new Token("ID OR KEYWORD", "int");
         IToken token1 = new Token("ID OR KEYWORD", "f");
         IToken token2 = new Token("ROUND LEFT BRACKET", "(");
