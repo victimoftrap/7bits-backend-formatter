@@ -1,5 +1,5 @@
 /**
- * General package for Formatter project
+ * General package for BasicFormatter project
  * */
 
 package it.sevenbits.formatter;

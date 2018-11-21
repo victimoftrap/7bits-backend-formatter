@@ -29,13 +29,11 @@ public class Lexer implements ILexer {
     private IReader reader;
     private Map<Character, IToken> separators;
     private char currentChar;
-    private boolean glueSituation;
-
-    private boolean lastChild;
     private char previousChar;
-    private IToken nextToken;
 
-    private boolean stringLiteral;
+    private IToken nextToken;
+    private boolean glueSituation;
+    private boolean lastChild;
 
     /**
      * Forbidden empty constructor
@@ -47,7 +45,7 @@ public class Lexer implements ILexer {
      * Creating lexer
      * @param reader some IReader realisation
      * */
-    public Lexer(IReader reader) {
+    public Lexer(final IReader reader) {
         this.reader = reader;
         separators = new HashMap<>();
         separators.put(CURLY_LEFT_BRACKET, new Token("CURLY LEFT BRACKET", "{"));
@@ -68,6 +66,22 @@ public class Lexer implements ILexer {
             return token;
         } else {
             return new Token("ID OR KEYWORD", accumulator.toString());
+        }
+    }
+
+    /**
+     * Creates new token or return previously created token
+     * @param lexeme string created from reader
+     * @param c this lexeme or last char from lexeme
+     * @return token
+     * */
+    private IToken createTokenBy(final String lexeme, final char c) {
+        IToken token = separators.get(c);
+        if (token != null) {
+            return token;
+        } else {
+            // где-то тут проверка на то, что это ключевое слово
+            return new Token("ID OR KEYWORD", lexeme);
         }
     }
 
@@ -100,9 +114,13 @@ public class Lexer implements ILexer {
                     if (sb.length() != 0) {
                         nextToken = separators.get(currentChar);
                         if (nextToken != null) {
+                            if (!hasNext()) {
+                                lastChild = true;
+                            }
                             glueSituation = true;
+                        } else {
+                            glueSituation = false;
                         }
-                        glueSituation = false;
                         return createToken(sb);
                     }
                 }
@@ -144,6 +162,6 @@ public class Lexer implements ILexer {
      * */
     @Override
     public boolean hasNext() {
-        return reader.hasNext() || lastChild;
+        return reader.hasNext() || lastChild ;
     }
 }

@@ -8,7 +8,7 @@ import it.sevenbits.formatter.exceptions.RWStreamException;
 /**
  * Interface of formatter
  * */
-public interface Formatting {
+public interface Formattable {
     /**
      * Format source
      * @param reader that contains source to format

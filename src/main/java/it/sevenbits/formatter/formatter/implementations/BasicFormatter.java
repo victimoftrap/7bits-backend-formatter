@@ -1,6 +1,7 @@
 package it.sevenbits.formatter.formatter.implementations;
 
-import it.sevenbits.formatter.formatter.Formatting;
+import it.sevenbits.formatter.exceptions.FormatterException;
+import it.sevenbits.formatter.formatter.Formattable;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 import it.sevenbits.formatter.exceptions.RWStreamException;
@@ -8,7 +9,7 @@ import it.sevenbits.formatter.exceptions.RWStreamException;
 /**
  * Class that formats code by code style rules
  * */
-public class Formatter implements Formatting {
+public class BasicFormatter implements Formattable {
     private final int INDENT_LENGTH = 4;
     private final String EXTRA_SPACE = "    ";
     private final char LCBRACE = '{';
@@ -50,7 +51,7 @@ public class Formatter implements Formatting {
      * @param reader - instance that contains code for formatting
      * @param writer - instance where we would write formatted code
      * */
-    public void format(IReader reader, IWriter writer) throws RWStreamException {
+    public void format(IReader reader, IWriter writer) throws FormatterException {
         boolean significantBefore = true;
         boolean significantNow = false;
         boolean needNewLine = false;
@@ -59,62 +60,66 @@ public class Formatter implements Formatting {
         boolean itsAString = false;
         char currentSymbol = 0;
 
-        while (reader.hasNext()) {
-            currentSymbol = reader.read();
+        try {
+            while (reader.hasNext()) {
+                currentSymbol = reader.read();
 
-            needSpace = false;
-            if (currentSymbol == SPACE) {
-                if (!itsAString) {
-                    while (reader.hasNext() && (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN)) {
-                        currentSymbol = reader.read();
-                        needSpace = true;
-                    }
-                    if (!reader.hasNext() && (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN)) {
-                        break;
+                needSpace = false;
+                if (currentSymbol == SPACE) {
+                    if (!itsAString) {
+                        while (reader.hasNext() && (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN)) {
+                            currentSymbol = reader.read();
+                            needSpace = true;
+                        }
+                        if (!reader.hasNext() && (currentSymbol == SPACE || currentSymbol == CARRIAGE_RETURN)) {
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (currentSymbol == CARRIAGE_RETURN) {
-                significantNow = true;
-            }
-            if (currentSymbol == LCBRACE) {
-                indentLevel++;
-                writer.write(SPACE);
-                writer.write(LCBRACE);
-                makeNewLine(writer);
-                significantNow = true;
-            }
-            if (currentSymbol == SEMICOLON) {
-                writer.write(SEMICOLON);
-                needNewLine = true;
-                significantNow = true;
-            }
-            if (currentSymbol == RCBRACE) {
-                indentLevel--;
-                makeNewLine(writer);
-                writer.write(RCBRACE);
-                needNewLine = true;
-                significantNow = true;
-            }
-
-            if (currentSymbol == DOUBLE_PRIME) {
-                itsAString = !itsAString;
-            }
-
-            if (!significantNow) {
-                if (!significantBefore && needSpace) {
+                if (currentSymbol == CARRIAGE_RETURN) {
+                    significantNow = true;
+                }
+                if (currentSymbol == LCBRACE) {
+                    indentLevel++;
                     writer.write(SPACE);
-                }
-                if (needNewLine) {
+                    writer.write(LCBRACE);
                     makeNewLine(writer);
-                    needNewLine = false;
+                    significantNow = true;
                 }
-                writer.write(currentSymbol);
-            }
+                if (currentSymbol == SEMICOLON) {
+                    writer.write(SEMICOLON);
+                    needNewLine = true;
+                    significantNow = true;
+                }
+                if (currentSymbol == RCBRACE) {
+                    indentLevel--;
+                    makeNewLine(writer);
+                    writer.write(RCBRACE);
+                    needNewLine = true;
+                    significantNow = true;
+                }
 
-            significantBefore = significantNow;
-            significantNow = false;
+                if (currentSymbol == DOUBLE_PRIME) {
+                    itsAString = !itsAString;
+                }
+
+                if (!significantNow) {
+                    if (!significantBefore && needSpace) {
+                        writer.write(SPACE);
+                    }
+                    if (needNewLine) {
+                        makeNewLine(writer);
+                        needNewLine = false;
+                    }
+                    writer.write(currentSymbol);
+                }
+
+                significantBefore = significantNow;
+                significantNow = false;
+            }
+        } catch (RWStreamException e) {
+            throw new FormatterException(e);
         }
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Package for writing system for Formatter
+ * Package for writing system for BasicFormatter
  * */
 
 package it.sevenbits.formatter.writers;
