@@ -60,7 +60,7 @@ public class Lexer implements ILexer {
      * @param accumulator with some string
      * @return token
      * */
-    private IToken createToken(StringBuilder accumulator) {
+    private IToken createToken(final StringBuilder accumulator) {
         IToken token = separators.get(previousChar);
         if (token != null) {
             return token;

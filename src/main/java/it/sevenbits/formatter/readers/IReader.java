@@ -2,8 +2,6 @@ package it.sevenbits.formatter.readers;
 
 import it.sevenbits.formatter.exceptions.RWStreamException;
 
-import java.io.IOException;
-
 /**
  * Interface for character reading from stream
  * */

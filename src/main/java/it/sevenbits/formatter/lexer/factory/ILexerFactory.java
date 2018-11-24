@@ -12,5 +12,5 @@ public interface ILexerFactory {
      * @param reader some implementation of IReader
      * @return created lexer
      * */
-    ILexer getLexer(final IReader reader);
+    ILexer getLexer(IReader reader);
 }

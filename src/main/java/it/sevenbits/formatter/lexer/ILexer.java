@@ -10,6 +10,7 @@ public interface ILexer {
 
     /**
      * @return IToken - next token from source
+     * @throws LexerException if some trouble with lexer happen
      * */
     IToken readToken() throws LexerException;
 

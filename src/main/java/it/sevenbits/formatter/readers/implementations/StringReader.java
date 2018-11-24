@@ -17,8 +17,9 @@ public class StringReader implements IReader {
 
     /**
      * Constructor that copies link on string
+     * @param source string that will be copied
      * */
-    public StringReader(String source) {
+    public StringReader(final String source) {
         this.source = source;
         position = 0;
     }
@@ -34,6 +35,7 @@ public class StringReader implements IReader {
     /**
      * Read character in current position and increase position if string has more characters
      * @return character in current position
+     * @throws RWStreamException if stream are empty
      * */
     public char read() throws RWStreamException {
         if (hasNext()) {

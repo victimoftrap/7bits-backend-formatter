@@ -12,5 +12,5 @@ public interface IWriter {
      * @param c - the character
      * @throws RWStreamException if it was some problem with stream
      * */
-    void write(final char c) throws RWStreamException;
+    void write(char c) throws RWStreamException;
 }

@@ -12,13 +12,35 @@ import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.formatter.implementations.CleverFormatter;
 import it.sevenbits.formatter.lexer.factory.implementations.LexerFactory;
 
-public class Main {
-    public static void main(String[] args) throws RWStreamException, FormatterException {
-        IReader reader = new FileReader(args[0]);
-        IWriter writer = new FileWriter(args[1]);
+/**
+ * Main class for running formatter
+ * */
+public final class Main {
+    private Main() {
+    }
+
+    /**
+     * Method that starts formatter
+     * @param args console arguments:
+     *        path to file that would be formatted, path to file that would contain reformatted code
+     *
+     * */
+    public static void main(final String[] args) {
+        IReader reader = null;
+        IWriter writer = null;
+        try {
+            reader = new FileReader(args[0]);
+            writer = new FileWriter(args[1]);
+        } catch (RWStreamException e) {
+            e.printStackTrace();
+        }
 
         ILexer lex = new Lexer(reader);
         Formattable formatter = new CleverFormatter(new LexerFactory());
-        formatter.format(reader, writer);
+        try {
+            formatter.format(reader, writer);
+        } catch (FormatterException e) {
+            e.printStackTrace();
+        }
     }
 }
