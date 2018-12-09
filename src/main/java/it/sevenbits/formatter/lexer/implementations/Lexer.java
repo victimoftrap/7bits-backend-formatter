@@ -1,11 +1,11 @@
 package it.sevenbits.formatter.lexer.implementations;
 
+import it.sevenbits.formatter.exceptions.ReaderException;
 import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
 import it.sevenbits.formatter.exceptions.LexerException;
-import it.sevenbits.formatter.exceptions.RWStreamException;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -150,7 +150,7 @@ public class Lexer implements ILexer {
                     }
                 }
             }
-        } catch (RWStreamException e) {
+        } catch (ReaderException e) {
             throw new LexerException("Some trouble with reader content", e);
         }
         return null;

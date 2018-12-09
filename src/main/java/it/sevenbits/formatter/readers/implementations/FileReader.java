@@ -1,7 +1,7 @@
 package it.sevenbits.formatter.readers.implementations;
 
+import it.sevenbits.formatter.exceptions.ReaderException;
 import it.sevenbits.formatter.readers.IReader;
-import it.sevenbits.formatter.exceptions.RWStreamException;
 
 import java.io.Reader;
 import java.nio.file.Files;
@@ -25,14 +25,14 @@ public class FileReader implements IReader, AutoCloseable {
     /**
      * Create FileReader by path to file
      * @param path - path to file
-     * @throws RWStreamException if some troubles with file happen
+     * @throws ReaderException if some troubles with file happen
      * */
-    public FileReader(final String path) throws RWStreamException {
+    public FileReader(final String path) throws ReaderException {
         try {
             reader = Files.newBufferedReader(Paths.get(path), Charset.forName("UTF-8"));
             currentSymbol = 0;
         } catch (IOException e) {
-            throw new RWStreamException(e);
+            throw new ReaderException(e);
         }
     }
 
@@ -50,25 +50,25 @@ public class FileReader implements IReader, AutoCloseable {
      * @return character in current position
      * */
     @Override
-    public char read() throws RWStreamException {
+    public char read() throws ReaderException {
         try {
             currentSymbol = reader.read();
             return (char) currentSymbol;
         } catch (IOException e) {
-            throw new RWStreamException(e);
+            throw new ReaderException(e);
         }
     }
 
     /**
      * Close file stream
-     * @throws RWStreamException if file cannot be closed
+     * @throws ReaderException if file cannot be closed
      * */
     @Override
-    public void close() throws RWStreamException {
+    public void close() throws ReaderException {
         try {
             reader.close();
         } catch (IOException e) {
-            throw new RWStreamException("Cannot close file", e);
+            throw new ReaderException("Cannot close file", e);
         }
     }
 }

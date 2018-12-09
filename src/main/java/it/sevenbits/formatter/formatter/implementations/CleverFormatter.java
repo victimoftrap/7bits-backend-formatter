@@ -1,13 +1,13 @@
 package it.sevenbits.formatter.formatter.implementations;
 
 import it.sevenbits.formatter.exceptions.FormatterException;
+import it.sevenbits.formatter.exceptions.WriterException;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.factory.ILexerFactory;
 import it.sevenbits.formatter.formatter.Formattable;
-import it.sevenbits.formatter.exceptions.RWStreamException;
 import it.sevenbits.formatter.exceptions.LexerException;
 
 /**
@@ -43,9 +43,9 @@ public class CleverFormatter implements Formattable {
      * Write lexeme into writer instance
      * @param writer - instance of IWriter
      * @param lexeme that we would write
-     * @throws RWStreamException if some trouble with writer happen
+     * @throws WriterException if some trouble with writer happen
      * */
-    private void writeLexeme(final IWriter writer, final String lexeme) throws RWStreamException {
+    private void writeLexeme(final IWriter writer, final String lexeme) throws WriterException {
         for (char c : lexeme.toCharArray()) {
             writer.write(c);
         }
@@ -54,9 +54,9 @@ public class CleverFormatter implements Formattable {
     /**
      * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
      * @param writer - instance of IWriter
-     * @throws RWStreamException if some trouble with writer happen
+     * @throws WriterException if some trouble with writer happen
      * */
-    private void makeIndent(final IWriter writer) throws RWStreamException {
+    private void makeIndent(final IWriter writer) throws WriterException {
         for (int i = 0; i < indentLevel; i++) {
             for (int j = 0; j < INDENT_LENGTH; j++) {
                 writer.write(SPACE);
@@ -67,9 +67,9 @@ public class CleverFormatter implements Formattable {
     /**
      * Make new line in IWriter several times
      * @param writer - instance of IWriter
-     * @throws RWStreamException if some trouble with writer happen
+     * @throws WriterException if some trouble with writer happen
      * */
-    private void makeNewLine(final IWriter writer) throws RWStreamException {
+    private void makeNewLine(final IWriter writer) throws WriterException {
         writer.write(CARRIAGE_RETURN);
         makeIndent(writer);
     }
@@ -137,7 +137,7 @@ public class CleverFormatter implements Formattable {
             }
         } catch (LexerException e) {
             throw new FormatterException("Some trouble with lexer", e);
-        } catch (RWStreamException e) {
+        } catch (WriterException e) {
             throw new FormatterException("Some trouble with writer", e);
         }
     }

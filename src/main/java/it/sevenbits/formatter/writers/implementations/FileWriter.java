@@ -1,9 +1,10 @@
 package it.sevenbits.formatter.writers.implementations;
 
+import it.sevenbits.formatter.exceptions.WriterException;
 import it.sevenbits.formatter.writers.IWriter;
-import it.sevenbits.formatter.exceptions.RWStreamException;
 
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
@@ -23,40 +24,40 @@ public class FileWriter implements IWriter, AutoCloseable {
     /**
      * Create FileWriter by path to file
      * @param path - path to file
-     * @throws RWStreamException if some troubles with file happen
+     * @throws WriterException if some troubles with file happen
      * */
-    public FileWriter(final String path) throws RWStreamException {
+    public FileWriter(final String path) throws WriterException {
         try {
-            writer = Files.newBufferedWriter(Paths.get(path));
+            writer = Files.newBufferedWriter(Paths.get(path), Charset.forName("UTF-8"));
         } catch (IOException e) {
-            throw new RWStreamException(e);
+            throw new WriterException(e);
         }
     }
 
     /**
      * Append character into file
      * @param c character that will appends into stream
-     * @throws RWStreamException if some troubles with file happen
+     * @throws WriterException if some troubles with file happen
      * */
     @Override
-    public void write(final char c) throws RWStreamException {
+    public void write(final char c) throws WriterException {
         try {
             writer.write(c);
         } catch (IOException e) {
-            throw new RWStreamException(e);
+            throw new WriterException(e);
         }
     }
 
     /**
      * Close file stream
-     * @throws RWStreamException if file cannot be closed
+     * @throws WriterException if file cannot be closed
      * */
     @Override
-    public void close() throws RWStreamException {
+    public void close() throws WriterException {
         try {
             writer.close();
         } catch (IOException e) {
-            throw new RWStreamException(e);
+            throw new WriterException(e);
         }
     }
 }

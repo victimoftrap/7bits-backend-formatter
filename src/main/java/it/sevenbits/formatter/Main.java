@@ -1,7 +1,8 @@
 package it.sevenbits.formatter;
 
 import it.sevenbits.formatter.exceptions.FormatterException;
-import it.sevenbits.formatter.exceptions.RWStreamException;
+import it.sevenbits.formatter.exceptions.ReaderException;
+import it.sevenbits.formatter.exceptions.WriterException;
 import it.sevenbits.formatter.formatter.Formattable;
 import it.sevenbits.formatter.readers.implementations.FileReader;
 import it.sevenbits.formatter.writers.implementations.FileWriter;
@@ -25,7 +26,7 @@ public final class Main {
             FileWriter writer = new FileWriter(args[1])) {
             Formattable formatter = new CleverFormatter(new LexerFactory());
             formatter.format(reader, writer);
-        } catch (RWStreamException | FormatterException e) {
+        } catch (FormatterException | WriterException | ReaderException e) {
             e.printStackTrace();
         }
     }

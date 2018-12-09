@@ -1,6 +1,6 @@
 package it.sevenbits.formatter.readers;
 
-import it.sevenbits.formatter.exceptions.RWStreamException;
+import it.sevenbits.formatter.exceptions.ReaderException;
 
 /**
  * Interface for character reading from stream
@@ -16,7 +16,7 @@ public interface IReader {
     /**
      * Method that reads character from stream
      * @return character from stream
-     * @throws RWStreamException if it was some problem with stream
+     * @throws ReaderException if it was some problem with stream
      * */
-    char read() throws RWStreamException;
+    char read() throws ReaderException;
 }

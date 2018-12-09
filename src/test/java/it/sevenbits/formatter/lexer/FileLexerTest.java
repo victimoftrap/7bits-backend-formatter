@@ -2,6 +2,7 @@ package it.sevenbits.formatter.lexer;
 
 import it.sevenbits.formatter.exceptions.LexerException;
 import it.sevenbits.formatter.exceptions.RWStreamException;
+import it.sevenbits.formatter.exceptions.ReaderException;
 import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
 import it.sevenbits.formatter.readers.implementations.FileReader;
@@ -25,7 +26,7 @@ public class FileLexerTest {
             assertEquals(new Token("ID OR KEYWORD", "x"), lexer.readToken());
             assertEquals(new Token("SEMICOLON", ";"), lexer.readToken());
             assertEquals(new Token("CURLY RIGHT BRACKET", "}"), lexer.readToken());
-        } catch (RWStreamException | LexerException e) {
+        } catch (ReaderException | LexerException e) {
             e.printStackTrace();
         }
     }

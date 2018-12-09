@@ -1,10 +1,11 @@
 package it.sevenbits.formatter.formatter.implementations;
 
 import it.sevenbits.formatter.exceptions.FormatterException;
+import it.sevenbits.formatter.exceptions.ReaderException;
+import it.sevenbits.formatter.exceptions.WriterException;
 import it.sevenbits.formatter.formatter.Formattable;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
-import it.sevenbits.formatter.exceptions.RWStreamException;
 
 /**
  * Class that formats code by code style rules
@@ -29,7 +30,7 @@ public class BasicFormatter implements Formattable {
      * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
      * @param writer - instance of IWriter
      * */
-    private void makeIndent(final IWriter writer) throws RWStreamException {
+    private void makeIndent(final IWriter writer) throws WriterException {
         for (int i = 0; i < indentLevel; i++) {
             for (int j = 0; j < INDENT_LENGTH; j++) {
                 writer.write(SPACE);
@@ -41,7 +42,7 @@ public class BasicFormatter implements Formattable {
      * Make new line in IWriter several times
      * @param writer - instance of IWriter
      * */
-    private void makeNewLine(final IWriter writer) throws RWStreamException {
+    private void makeNewLine(final IWriter writer) throws WriterException {
         writer.write(CARRIAGE_RETURN);
         makeIndent(writer);
     }
@@ -119,7 +120,7 @@ public class BasicFormatter implements Formattable {
                 significantBefore = significantNow;
                 significantNow = false;
             }
-        } catch (RWStreamException e) {
+        } catch (ReaderException | WriterException e) {
             throw new FormatterException(e);
         }
     }
