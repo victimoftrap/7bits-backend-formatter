@@ -12,18 +12,15 @@ import java.util.Map;
 public class LexerStateMap implements ILexerStateMap {
     private Map<Pair<State, Character>, State> stateMap;
     private State defaultState = new State("WAIT BEFORE");
-    private String ID = "ID";
-    private String CURLY_LEFT_BRACE = "CURLY LEFT BRACKET";
-    private String SEMICOLON = "SEMICOLON";
 
     /**
      * Create map of transitions
      */
     public LexerStateMap() {
         stateMap = new HashMap<>();
-        State idState = new State(ID);
-        State semicolonState = new State(SEMICOLON);
-        State curlyLeftBraceState = new State(CURLY_LEFT_BRACE);
+        State idState = new State("ID");
+        State semicolonState = new State("SEMICOLON");
+        State curlyLeftBraceState = new State("CURLY_LEFT_BRACE");
         State waitAfterState = new State("WAIT AFTER");
         State releaseState = new State("RELEASE");
         State stringLiteralState = new State("STRING");
@@ -59,11 +56,21 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(stringLiteralState, '\"'), waitAfterState);
     }
 
+    /**
+     * @return start state of automata
+     */
     @Override
     public State getStartState() {
         return defaultState;
     }
 
+    /**
+     * Get next state of automata
+     *
+     * @param state       current state
+     * @param currentChar current char
+     * @return next state
+     */
     @Override
     public State getNextState(final State state, final char currentChar) {
         State next = stateMap.get(new Pair<>(state, currentChar));

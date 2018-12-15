@@ -7,6 +7,7 @@ import java.util.Objects;
  */
 public class State {
     private final String currentState;
+    private String type;
 
     /**
      * Create state
@@ -15,6 +16,18 @@ public class State {
      */
     public State(final String currentState) {
         this.currentState = currentState;
+        type = currentState;
+    }
+
+    /**
+     * Create state
+     *
+     * @param currentState name of state
+     * @param type         type of lexeme in this state
+     */
+    public State(final String currentState, final String type) {
+        this.currentState = currentState;
+        this.type = type;
     }
 
     /**
@@ -24,16 +37,26 @@ public class State {
         return currentState;
     }
 
+    /**
+     * Get type of lexeme from this state
+     *
+     * @return type of state
+     */
+    public String getType() {
+        return type;
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return Objects.equals(currentState, state.currentState);
+        return Objects.equals(currentState, state.currentState) &&
+                Objects.equals(type, state.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentState);
+        return Objects.hash(currentState, type);
     }
 }
