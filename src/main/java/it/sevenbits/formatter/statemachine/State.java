@@ -6,27 +6,27 @@ import java.util.Objects;
  * Class of automata's state
  */
 public class State {
-    private final String currentState;
+    private final String name;
     private String type;
 
     /**
      * Create state
      *
-     * @param currentState name of state
+     * @param name name of state
      */
-    public State(final String currentState) {
-        this.currentState = currentState;
-        type = currentState;
+    public State(final String name) {
+        this.name = name;
+        type = name;
     }
 
     /**
      * Create state
      *
-     * @param currentState name of state
-     * @param type         type of lexeme in this state
+     * @param name name of state
+     * @param type type of lexeme in this state
      */
-    public State(final String currentState, final String type) {
-        this.currentState = currentState;
+    public State(final String name, final String type) {
+        this.name = name;
         this.type = type;
     }
 
@@ -34,7 +34,7 @@ public class State {
      * @return name of state
      */
     public String toString() {
-        return currentState;
+        return name;
     }
 
     /**
@@ -51,12 +51,12 @@ public class State {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return Objects.equals(currentState, state.currentState) &&
+        return Objects.equals(name, state.name) &&
                 Objects.equals(type, state.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentState, type);
+        return Objects.hash(name, type);
     }
 }
