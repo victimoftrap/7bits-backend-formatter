@@ -20,6 +20,6 @@ public class AddToBufferCommand implements ILexerCommand {
 
     @Override
     public void execute() {
-        context.getTokenBuffer().append(context.getCurrentChar());
+        context.getLexemeBuffer().append(context.getCurrentChar());
     }
 }

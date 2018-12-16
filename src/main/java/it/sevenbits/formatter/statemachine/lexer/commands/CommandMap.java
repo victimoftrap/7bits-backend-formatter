@@ -3,10 +3,7 @@ package it.sevenbits.formatter.statemachine.lexer.commands;
 import it.sevenbits.formatter.statemachine.Pair;
 import it.sevenbits.formatter.statemachine.State;
 import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.AddToBufferCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.SaveAnonymousCharCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.IgnoreCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.ReleaseTokenCommand;
+import it.sevenbits.formatter.statemachine.lexer.commands.implementations.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,19 +24,21 @@ public class CommandMap {
         State defaultState = new State("WAIT BEFORE");
         State waitAfterState = new State("WAIT AFTER");
         State releaseState = new State("RELEASE");
-        State idState = new State("ID");
-        State semicolonState = new State("SEMICOLON");
         State curlyLeftBraceState = new State("CURLY_LEFT_BRACE");
+        State curlyRightBraceState = new State("CURLY_RIGHT_BRACE");
+        State semicolonState = new State("SEMICOLON");
         State stringLiteralState = new State("STRING");
+        State idState = new State("ID");
 
         ILexerCommand ignore = new IgnoreCommand(context);
         ILexerCommand add = new AddToBufferCommand(context);
         ILexerCommand release = new ReleaseTokenCommand(context);
         ILexerCommand releaseSave = new ReleaseTokenCommand(context, new SaveAnonymousCharCommand(context));
+        ILexerCommand recognizeAdd = new RecognizeTypeCommand(context, add);
 
         commandMap.put(new Pair<>(defaultState, ' '), ignore);
         commandMap.put(new Pair<>(defaultState, '\n'), ignore);
-        commandMap.put(new Pair<>(defaultState, null), add);
+        commandMap.put(new Pair<>(defaultState, null), recognizeAdd);
 
         commandMap.put(new Pair<>(idState, null), add);
         commandMap.put(new Pair<>(idState, ' '), ignore);
@@ -53,6 +52,10 @@ public class CommandMap {
         commandMap.put(new Pair<>(curlyLeftBraceState, ' '), ignore);
         commandMap.put(new Pair<>(curlyLeftBraceState, '\n'), ignore);
         commandMap.put(new Pair<>(curlyLeftBraceState, null), releaseSave);
+
+        commandMap.put(new Pair<>(curlyRightBraceState, ' '), ignore);
+        commandMap.put(new Pair<>(curlyRightBraceState, '\n'), ignore);
+        commandMap.put(new Pair<>(curlyRightBraceState, null), releaseSave);
 
         commandMap.put(new Pair<>(waitAfterState, ' '), ignore);
         commandMap.put(new Pair<>(waitAfterState, '\n'), ignore);

@@ -1,13 +1,12 @@
 package it.sevenbits.formatter.statemachine.lexer.commands.implementations;
 
-import it.sevenbits.formatter.lexer.token.implementations.Token;
 import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
 import it.sevenbits.formatter.statemachine.lexer.commands.ILexerCommand;
 
 /**
- * Command for creating token
+ * Command that would save recognized lexeme type
  */
-public class ReleaseTokenCommand implements ILexerCommand {
+public class RecognizeTypeCommand implements ILexerCommand {
     private TokenBuilderContext context;
     private ILexerCommand command;
 
@@ -16,7 +15,7 @@ public class ReleaseTokenCommand implements ILexerCommand {
      *
      * @param context context with current situation in lexer
      */
-    public ReleaseTokenCommand(final TokenBuilderContext context) {
+    public RecognizeTypeCommand(final TokenBuilderContext context) {
         this.context = context;
     }
 
@@ -26,18 +25,17 @@ public class ReleaseTokenCommand implements ILexerCommand {
      * @param context context with current situation in lexer
      * @param command that would execute after this command
      */
-    public ReleaseTokenCommand(final TokenBuilderContext context, final ILexerCommand command) {
+    public RecognizeTypeCommand(final TokenBuilderContext context, final ILexerCommand command) {
         this.context = context;
         this.command = command;
     }
 
     /**
-     * Execute this command and execute next command if it's not null
+     * Save lexeme type and execute next command, if it exists
      */
     @Override
     public void execute() {
-        this.context.setToken(new Token(context.getLexemeType(), context.getLexemeBuffer().toString()));
-        this.context.getLexemeBuffer().setLength(0);
+        context.setLexemeType(context.getStateType());
         if (command != null) {
             command.execute();
         }

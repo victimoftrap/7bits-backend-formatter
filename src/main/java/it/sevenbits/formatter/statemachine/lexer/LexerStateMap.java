@@ -21,6 +21,7 @@ public class LexerStateMap implements ILexerStateMap {
         State idState = new State("ID");
         State semicolonState = new State("SEMICOLON");
         State curlyLeftBraceState = new State("CURLY_LEFT_BRACE");
+        State curlyRightBraceState = new State("CURLY_RIGHT_BRACE");
         State waitAfterState = new State("WAIT AFTER");
         State releaseState = new State("RELEASE");
         State stringLiteralState = new State("STRING");
@@ -30,6 +31,7 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(defaultState, '\"'), stringLiteralState);
         stateMap.put(new Pair<>(defaultState, ';'), semicolonState);
         stateMap.put(new Pair<>(defaultState, '{'), curlyLeftBraceState);
+        stateMap.put(new Pair<>(defaultState, '}'), curlyRightBraceState);
         stateMap.put(new Pair<>(defaultState, null), idState);
         /**Насколько легально делать ключ или часть ключа null, чтобы сделать какое-то значение по-умаолчанию?
          * Долго думал над какими-нибудь другими возможными решениями, но ничего дельного из них не вышло.*/
@@ -38,6 +40,7 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(idState, '\n'), waitAfterState);
         stateMap.put(new Pair<>(idState, ';'), releaseState);
         stateMap.put(new Pair<>(idState, '{'), releaseState);
+        stateMap.put(new Pair<>(idState, '}'), releaseState);
         stateMap.put(new Pair<>(idState, null), idState);
 
         stateMap.put(new Pair<>(semicolonState, ' '), waitAfterState);
@@ -48,9 +51,13 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(curlyLeftBraceState, '\n'), waitAfterState);
         stateMap.put(new Pair<>(curlyLeftBraceState, null), releaseState);
 
+        stateMap.put(new Pair<>(curlyRightBraceState, ' '), waitAfterState);
+        stateMap.put(new Pair<>(curlyRightBraceState, '\n'), waitAfterState);
+        stateMap.put(new Pair<>(curlyRightBraceState, null), releaseState);
+
         stateMap.put(new Pair<>(waitAfterState, ' '), waitAfterState);
         stateMap.put(new Pair<>(waitAfterState, '\n'), waitAfterState);
-        stateMap.put(new Pair<>(waitAfterState, null), waitAfterState);
+        stateMap.put(new Pair<>(waitAfterState, null), releaseState);
 
         stateMap.put(new Pair<>(stringLiteralState, null), stringLiteralState);
         stateMap.put(new Pair<>(stringLiteralState, '\"'), waitAfterState);
