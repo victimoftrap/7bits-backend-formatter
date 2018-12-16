@@ -12,6 +12,9 @@ public final class Pair<T, U> {
     private T first;
     private U second;
 
+    private Pair() {
+    }
+
     /**
      * Create pair of some elements
      *

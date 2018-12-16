@@ -6,24 +6,22 @@ import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
 import it.sevenbits.formatter.readers.IReader;
-import it.sevenbits.formatter.readers.implementations.StringReader;
 import it.sevenbits.formatter.statemachine.State;
 import it.sevenbits.formatter.statemachine.lexer.LexerStateMap;
+import it.sevenbits.formatter.statemachine.lexer.LexerStateTransition;
 import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
 import it.sevenbits.formatter.statemachine.lexer.commands.CommandMap;
+import it.sevenbits.formatter.statemachine.lexer.commands.CommandTransition;
 import it.sevenbits.formatter.statemachine.lexer.commands.ILexerCommand;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that implements lexer interface by state machine
  */
 public class StateMachineLexer implements ILexer {
     private IReader reader;
-    private LexerStateMap lexerStateMap;
+    private LexerStateTransition lexerTransition;
     private TokenBuilderContext context;
-    private CommandMap commandMap;
+    private CommandTransition commandTransition;
     private boolean isAnonymousChar;
 
     private StateMachineLexer() {
@@ -36,9 +34,9 @@ public class StateMachineLexer implements ILexer {
      */
     public StateMachineLexer(final IReader reader) {
         this.reader = reader;
-        this.lexerStateMap = new LexerStateMap();
+        this.lexerTransition = new LexerStateTransition(new LexerStateMap());
         this.context = new TokenBuilderContext();
-        this.commandMap = new CommandMap(context);
+        this.commandTransition = new CommandTransition(new CommandMap(context));
     }
 
     /**
@@ -46,7 +44,7 @@ public class StateMachineLexer implements ILexer {
      */
     @Override
     public IToken readToken() throws LexerException {
-        State current = lexerStateMap.getStartState();
+        State current = lexerTransition.getStartState();
         try {
             while (hasNext() && !current.toString().equals("RELEASE")) {
                 /*if (!isAnonymousChar) {
@@ -63,9 +61,9 @@ public class StateMachineLexer implements ILexer {
                     context.setCurrentChar(reader.read());
                 }
 
-                State next = lexerStateMap.getNextState(current, context.getCurrentChar());
+                State next = lexerTransition.getNextState(current, context.getCurrentChar());
                 context.setStateType(next.getType());
-                ILexerCommand command = commandMap.getCommand(current, context);
+                ILexerCommand command = commandTransition.nextCommand(current, context);
                 command.execute();
                 current = next;
             }
@@ -83,7 +81,7 @@ public class StateMachineLexer implements ILexer {
                 return token;
             }
         } catch (ReaderException e) {
-            throw new LexerException(e);
+            throw new LexerException("Some troubles with reader " + e);
         }
         return null;
     }
@@ -94,13 +92,5 @@ public class StateMachineLexer implements ILexer {
     @Override
     public boolean hasNext() {
         return reader.hasNext() || context.getNextLexemeChar() != 0;
-    }
-
-    public static void main(String[] args) throws LexerException {
-        StateMachineLexer sml = new StateMachineLexer(new StringReader("   {    abceda   ; \"meye\";  }   "));
-        List<IToken> list = new ArrayList<>();
-        while (sml.hasNext()) {
-            list.add(sml.readToken());
-        }
     }
 }

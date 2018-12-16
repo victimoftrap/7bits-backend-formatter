@@ -8,6 +8,9 @@ import it.sevenbits.formatter.statemachine.State;
 public class LexerStateTransition {
     private LexerStateMap lexerStateMap;
 
+    private LexerStateTransition(){
+    }
+
     /**
      * Create lexer transitions
      *

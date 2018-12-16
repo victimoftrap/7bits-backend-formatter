@@ -14,6 +14,9 @@ import java.util.Map;
 public class CommandMap {
     private Map<Pair<State, Character>, ILexerCommand> commandMap;
 
+    private CommandMap() {
+    }
+
     /**
      * Create command map
      *
