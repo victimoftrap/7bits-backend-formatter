@@ -24,14 +24,19 @@ public class CommandMap {
      */
     public CommandMap(final TokenBuilderContext context) {
         this.commandMap = new HashMap<>();
+        State releaseState = new State("RELEASE");
         State defaultState = new State("WAIT BEFORE");
         State waitAfterState = new State("WAIT AFTER");
-        State releaseState = new State("RELEASE");
         State curlyLeftBraceState = new State("CURLY_LEFT_BRACE");
         State curlyRightBraceState = new State("CURLY_RIGHT_BRACE");
         State semicolonState = new State("SEMICOLON");
         State stringLiteralState = new State("STRING");
         State idState = new State("ID");
+
+        State slashState = new State("SLASH", "DIVIDE");
+        State inlineCommentState = new State("//", "INLINE_COMMENT");
+        State multiLineCommentState = new State("ASTERISK", "MULTILINE_COMMENT");
+        State lastAsteriskState = new State("LAST_ASTERISK", multiLineCommentState.getType());
 
         ILexerCommand ignore = new IgnoreCommand(context);
         ILexerCommand add = new AddToBufferCommand(context);
