@@ -38,10 +38,13 @@ public class CommandMap {
         State multiLineCommentState = new State("ASTERISK", "MULTILINE_COMMENT");
         State lastAsteriskState = new State("LAST_ASTERISK", multiLineCommentState.getType());
 
+        ILexerCommand save = new SaveAnonymousCharCommand(context);
         ILexerCommand ignore = new IgnoreCommand(context);
         ILexerCommand add = new AddToBufferCommand(context);
         ILexerCommand release = new ReleaseTokenCommand(context);
-        ILexerCommand releaseSave = new ReleaseTokenCommand(context, new SaveAnonymousCharCommand(context));
+        ILexerCommand releaseSave = new ReleaseTokenCommand(context, save);
+        ILexerCommand recognize = new RecognizeTypeCommand(context);
+        ILexerCommand recognizeSave = new RecognizeTypeCommand(context, save);
         ILexerCommand recognizeAdd = new RecognizeTypeCommand(context, add);
 
         commandMap.put(new Pair<>(defaultState, ' '), ignore);
@@ -71,6 +74,24 @@ public class CommandMap {
 
         commandMap.put(new Pair<>(stringLiteralState, null), add);
         commandMap.put(new Pair<>(stringLiteralState, '\"'), add);
+
+        //
+        commandMap.put(new Pair<>(defaultState, '/'), add);
+
+        commandMap.put(new Pair<>(slashState, ' '), recognize);
+        commandMap.put(new Pair<>(slashState, '\n'), recognize);
+        commandMap.put(new Pair<>(slashState, '/'), recognizeAdd);
+        commandMap.put(new Pair<>(slashState, '*'), recognizeAdd);
+        commandMap.put(new Pair<>(slashState, null), recognizeSave);
+
+        commandMap.put(new Pair<>(inlineCommentState, null), add);
+        commandMap.put(new Pair<>(inlineCommentState, '\n'), ignore);
+
+        commandMap.put(new Pair<>(multiLineCommentState, null), add);
+        commandMap.put(new Pair<>(multiLineCommentState, '*'), add);
+
+        commandMap.put(new Pair<>(lastAsteriskState, '/'), add);
+        commandMap.put(new Pair<>(lastAsteriskState, null), add);
     }
 
     /**

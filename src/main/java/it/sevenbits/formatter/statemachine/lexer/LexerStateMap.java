@@ -77,10 +77,11 @@ public class LexerStateMap implements ILexerStateMap {
         // comments transitions
         stateMap.put(new Pair<>(defaultState, '/'), slashState);
 
-        stateMap.put(new Pair<>(slashState, '/'), inlineCommentState);
-        stateMap.put(new Pair<>(slashState, '*'), multiLineCommentState);
         stateMap.put(new Pair<>(slashState, ' '), waitAfterState);
         stateMap.put(new Pair<>(slashState, '\n'), waitAfterState);
+        stateMap.put(new Pair<>(slashState, null), releaseState);
+        stateMap.put(new Pair<>(slashState, '/'), inlineCommentState);
+        stateMap.put(new Pair<>(slashState, '*'), multiLineCommentState);
 
         stateMap.put(new Pair<>(inlineCommentState, '\n'), waitAfterState);
         stateMap.put(new Pair<>(inlineCommentState, null), inlineCommentState);
