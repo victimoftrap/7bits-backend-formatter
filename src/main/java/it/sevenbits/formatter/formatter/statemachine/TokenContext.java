@@ -65,6 +65,8 @@ public class TokenContext {
 
     /**
      * Get current indent level
+     *
+     * @return current indent
      */
     public int getIndentLevel() {
         return indentLevel;
@@ -81,18 +83,23 @@ public class TokenContext {
 
     /**
      * Get indent size
+     *
+     * @return standard indent size
      */
     public int getIndentSize() {
         return INDENT_SIZE;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TokenContext that = (TokenContext) o;
-        return Objects.equals(writer, that.writer) &&
-                Objects.equals(token, that.token);
+        return Objects.equals(writer, that.writer) && Objects.equals(token, that.token);
     }
 
     @Override

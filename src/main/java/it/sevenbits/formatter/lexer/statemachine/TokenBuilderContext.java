@@ -116,7 +116,7 @@ public class TokenBuilderContext {
     /**
      * Save type of lexeme
      *
-     * @param lexemeType
+     * @param lexemeType type of current lexeme
      */
     public void setLexemeType(final String lexemeType) {
         this.lexemeType = lexemeType;
