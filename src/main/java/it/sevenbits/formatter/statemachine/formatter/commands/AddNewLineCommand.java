@@ -4,18 +4,18 @@ import it.sevenbits.formatter.exceptions.WriterException;
 import it.sevenbits.formatter.statemachine.formatter.TokenContext;
 
 /**
- * Command for writing token in IWriter
+ * Command for making new line
  */
-public class AddTokenCommand implements IFormatterCommand {
+public class AddNewLineCommand implements IFormatterCommand {
     private TokenContext context;
     private IFormatterCommand nextInChain;
 
     /**
-     * Create command
+     * Create nextInChain
      *
      * @param context with current situation in formatter
      */
-    public AddTokenCommand(final TokenContext context) {
+    public AddNewLineCommand(final TokenContext context) {
         this.context = context;
     }
 
@@ -25,7 +25,7 @@ public class AddTokenCommand implements IFormatterCommand {
      * @param context     with current situation in formatter
      * @param nextCommand next command
      */
-    public AddTokenCommand(final TokenContext context, final IFormatterCommand nextCommand) {
+    public AddNewLineCommand(final TokenContext context, final IFormatterCommand nextCommand) {
         this.context = context;
         this.nextInChain = nextCommand;
     }
@@ -37,8 +37,9 @@ public class AddTokenCommand implements IFormatterCommand {
      */
     @Override
     public void execute() throws WriterException {
-        for (char c : context.getToken().getName().toCharArray()) {
-            context.getWriter().write(c);
+        context.getWriter().write('\n');
+        for (int i = 0; i < context.getIndentSize(); i++) {
+            context.getWriter().write(' ');
         }
 
         if (nextInChain != null) {

@@ -9,10 +9,11 @@ import java.util.Map;
 /**
  * Class, collected formatter's states
  */
-public class FormatterStateMap implements IStateMap {
+public class FormatterStateMap implements IFormatterStateMap {
     private Map<Pair<State, String>, State> stateMap;
     private State defaultState = new State("LISTEN");
-    private String CURLY_LEFT_BRACE = "CURLY LEFT BRACKET";
+    private String CURLY_LEFT_BRACE = "CURLY_LEFT_BRACE";
+    private String CURLY_RIGHT_BRACE = "CURLY_RIGHT_BRACE";
     private String SEMICOLON = "SEMICOLON";
 
     /**
@@ -20,19 +21,21 @@ public class FormatterStateMap implements IStateMap {
      */
     public FormatterStateMap() {
         stateMap = new HashMap<>();
-        State idState = new State("ID");
-        State clbState = new State("CLB");
-        State semicolonState = new State("SEMICOLON");
+        State semicolonState = new State(SEMICOLON);
+        State curlyLeftBraceState = new State(CURLY_LEFT_BRACE);
+        State curlyRightBraceState = new State(CURLY_RIGHT_BRACE);
 
-        stateMap.put(new Pair<>(defaultState, "ID_OR_KEYWORD"), idState);
-        stateMap.put(new Pair<>(defaultState, CURLY_LEFT_BRACE), clbState);
+        stateMap.put(new Pair<>(defaultState, CURLY_LEFT_BRACE), curlyLeftBraceState);
+        stateMap.put(new Pair<>(defaultState, SEMICOLON), semicolonState);
+        stateMap.put(new Pair<>(defaultState, CURLY_RIGHT_BRACE), curlyRightBraceState);
+        stateMap.put(new Pair<>(defaultState, null), defaultState);
 
-        stateMap.put(new Pair<>(idState, "ID_OR_KEYWORD"), idState);
-        stateMap.put(new Pair<>(idState, SEMICOLON), semicolonState);
+        stateMap.put(new Pair<>(curlyLeftBraceState, null), defaultState);
 
-        stateMap.put(new Pair<>(clbState, "ID_OR_KEYWORD"), defaultState);
+        stateMap.put(new Pair<>(semicolonState, null), defaultState);
+        stateMap.put(new Pair<>(semicolonState, CURLY_RIGHT_BRACE), curlyRightBraceState);
 
-        stateMap.put(new Pair<>(semicolonState, "ID_OR_KEYWORD"), defaultState);
+        stateMap.put(new Pair<>(curlyRightBraceState, null), defaultState);
     }
 
     /**
@@ -50,6 +53,10 @@ public class FormatterStateMap implements IStateMap {
      */
     @Override
     public State getNextState(final State state, final String tokenType) {
-        return stateMap.get(new Pair<>(state, tokenType));
+        State next = stateMap.get(new Pair<>(state, tokenType));
+        if (next == null) {
+            return stateMap.get(new Pair<>(state, null));
+        }
+        return next;
     }
 }

@@ -4,31 +4,30 @@ import it.sevenbits.formatter.exceptions.WriterException;
 import it.sevenbits.formatter.statemachine.formatter.TokenContext;
 
 /**
- * Command for writing space in IWriter
+ * Command for decreasing indent level of code
  */
-public class WriteSpaceBeforeCommand implements IFormatterCommand {
+public class DecreaseIndentCommand implements IFormatterCommand {
     private TokenContext context;
-    private IFormatterCommand command;
-    private char SPACE = ' ';
+    private IFormatterCommand nextInChain;
 
     /**
-     * Create command
+     * Create nextInChain
      *
      * @param context with current situation in formatter
      */
-    public WriteSpaceBeforeCommand(final TokenContext context) {
+    public DecreaseIndentCommand(final TokenContext context) {
         this.context = context;
     }
 
     /**
      * Create command and set next command
      *
-     * @param context with IWriter and current IToken
-     * @param command next command in chain
+     * @param context     with current situation in formatter
+     * @param nextCommand next command
      */
-    public WriteSpaceBeforeCommand(final TokenContext context, final IFormatterCommand command) {
+    public DecreaseIndentCommand(final TokenContext context, final IFormatterCommand nextCommand) {
         this.context = context;
-        this.command = command;
+        this.nextInChain = nextCommand;
     }
 
     /**
@@ -38,10 +37,10 @@ public class WriteSpaceBeforeCommand implements IFormatterCommand {
      */
     @Override
     public void execute() throws WriterException {
-        context.getWriter().write(SPACE);
+        context.setIndentLevel(context.getIndentLevel() - 1);
 
-        if (command != null) {
-            command.execute();
+        if (nextInChain != null) {
+            nextInChain.execute();
         }
     }
 }

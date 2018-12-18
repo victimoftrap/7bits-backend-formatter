@@ -6,14 +6,14 @@ import it.sevenbits.formatter.statemachine.State;
  * State transition for formatter
  */
 public class FormatterStateTransition {
-    private IStateMap stateMap;
+    private IFormatterStateMap stateMap;
 
     /**
      * Create transition by state map
      *
-     * @param stateMap implementation of IStateMap
+     * @param stateMap implementation of IFormatterStateMap
      */
-    public FormatterStateTransition(final IStateMap stateMap) {
+    public FormatterStateTransition(final IFormatterStateMap stateMap) {
         this.stateMap = stateMap;
     }
 

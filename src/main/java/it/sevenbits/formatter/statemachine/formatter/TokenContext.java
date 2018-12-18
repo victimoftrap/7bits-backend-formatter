@@ -11,6 +11,8 @@ import java.util.Objects;
 public class TokenContext {
     private IWriter writer;
     private IToken token;
+    private int indentLevel;
+    private final int INDENT_SIZE = 4;
 
     /**
      * Create context class for formatter
@@ -53,6 +55,29 @@ public class TokenContext {
      */
     public void setToken(final IToken token) {
         this.token = token;
+    }
+
+    /**
+     * Get current indent level
+     */
+    public int getIndentLevel() {
+        return indentLevel;
+    }
+
+    /**
+     * Set indent level
+     *
+     * @param indentLevel current indent
+     */
+    public void setIndentLevel(final int indentLevel) {
+        this.indentLevel = indentLevel;
+    }
+
+    /**
+     * Get indent size
+     */
+    public int getIndentSize() {
+        return INDENT_SIZE;
     }
 
     @Override

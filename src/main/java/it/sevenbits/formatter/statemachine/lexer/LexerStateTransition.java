@@ -6,7 +6,7 @@ import it.sevenbits.formatter.statemachine.State;
  * Class for running state transitions
  */
 public class LexerStateTransition {
-    private LexerStateMap lexerStateMap;
+    private ILexerStateMap lexerStateMap;
 
     private LexerStateTransition(){
     }
@@ -16,7 +16,7 @@ public class LexerStateTransition {
      *
      * @param lexerStateMap some lexer state map
      */
-    public LexerStateTransition(final LexerStateMap lexerStateMap) {
+    public LexerStateTransition(final ILexerStateMap lexerStateMap) {
         this.lexerStateMap = lexerStateMap;
     }
 
