@@ -1,6 +1,6 @@
 package it.sevenbits.formatter.writers.implementations;
 
-import it.sevenbits.formatter.exceptions.WriterException;
+import it.sevenbits.formatter.writers.WriterException;
 import it.sevenbits.formatter.writers.IWriter;
 
 import java.io.Writer;

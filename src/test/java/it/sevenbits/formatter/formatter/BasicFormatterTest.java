@@ -1,6 +1,5 @@
 package it.sevenbits.formatter.formatter;
 
-import it.sevenbits.formatter.exceptions.FormatterException;
 import it.sevenbits.formatter.formatter.implementations.BasicFormatter;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.readers.implementations.StringReader;

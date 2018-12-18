@@ -1,7 +1,5 @@
 package it.sevenbits.formatter.writers;
 
-import it.sevenbits.formatter.exceptions.WriterException;
-
 /**
  * Interface for character writing into stream
  * */

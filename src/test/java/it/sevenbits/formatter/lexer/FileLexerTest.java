@@ -1,8 +1,6 @@
 package it.sevenbits.formatter.lexer;
 
-import it.sevenbits.formatter.exceptions.LexerException;
-import it.sevenbits.formatter.exceptions.RWStreamException;
-import it.sevenbits.formatter.exceptions.ReaderException;
+import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
 import it.sevenbits.formatter.readers.implementations.FileReader;

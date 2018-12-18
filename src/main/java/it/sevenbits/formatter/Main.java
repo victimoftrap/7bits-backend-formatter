@@ -1,9 +1,9 @@
 package it.sevenbits.formatter;
 
-import it.sevenbits.formatter.exceptions.FormatterException;
-import it.sevenbits.formatter.exceptions.ReaderException;
-import it.sevenbits.formatter.exceptions.WriterException;
-import it.sevenbits.formatter.formatter.Formattable;
+import it.sevenbits.formatter.formatter.FormatterException;
+import it.sevenbits.formatter.readers.ReaderException;
+import it.sevenbits.formatter.writers.WriterException;
+import it.sevenbits.formatter.formatter.IFormatter;
 import it.sevenbits.formatter.readers.implementations.FileReader;
 import it.sevenbits.formatter.writers.implementations.FileWriter;
 import it.sevenbits.formatter.formatter.implementations.CleverFormatter;
@@ -24,7 +24,7 @@ public final class Main {
     public static void main(final String[] args) {
         try (FileReader reader = new FileReader(args[0]);
             FileWriter writer = new FileWriter(args[1])) {
-            Formattable formatter = new CleverFormatter(new LexerFactory());
+            IFormatter formatter = new CleverFormatter(new LexerFactory());
             formatter.format(reader, writer);
         } catch (FormatterException | WriterException | ReaderException e) {
             e.printStackTrace();

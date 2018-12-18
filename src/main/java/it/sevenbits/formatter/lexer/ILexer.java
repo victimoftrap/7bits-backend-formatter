@@ -1,6 +1,5 @@
 package it.sevenbits.formatter.lexer;
 
-import it.sevenbits.formatter.exceptions.LexerException;
 import it.sevenbits.formatter.lexer.token.IToken;
 
 /**

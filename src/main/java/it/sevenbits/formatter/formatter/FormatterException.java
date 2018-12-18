@@ -1,20 +1,20 @@
-package it.sevenbits.formatter.exceptions;
+package it.sevenbits.formatter.formatter;
 
 /**
- * Exception class ILexer
+ * Exception for BasicFormatter
  * */
-public class LexerException extends Exception {
+public class FormatterException extends Exception {
     /**
      * Default exception constructor
      * */
-    public LexerException() {
+    public FormatterException() {
     }
 
     /**
      * Exception constructor
      * @param s - description message
      * */
-    public LexerException(final String s) {
+    public FormatterException(final String s) {
         super(s);
     }
 
@@ -23,7 +23,7 @@ public class LexerException extends Exception {
      * @param s - description message
      * @param throwable - previous exception
      * */
-    public LexerException(final String s, final Throwable throwable) {
+    public FormatterException(final String s, final Throwable throwable) {
         super(s, throwable);
     }
 
@@ -31,7 +31,7 @@ public class LexerException extends Exception {
      * Exception constructor
      * @param throwable - previous exception
      * */
-    public LexerException(final Throwable throwable) {
+    public FormatterException(final Throwable throwable) {
         super(throwable);
     }
 }

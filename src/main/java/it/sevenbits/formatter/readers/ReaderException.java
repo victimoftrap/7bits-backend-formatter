@@ -1,13 +1,13 @@
-package it.sevenbits.formatter.exceptions;
+package it.sevenbits.formatter.readers;
 
 /**
- * Exception class for IWriter
+ * Exception class for IReader
  */
-public class WriterException extends Exception {
+public class ReaderException extends Exception {
     /**
      * Default exception constructor
      */
-    public WriterException() {
+    public ReaderException() {
     }
 
     /**
@@ -15,7 +15,7 @@ public class WriterException extends Exception {
      *
      * @param s - description message
      */
-    public WriterException(final String s) {
+    public ReaderException(final String s) {
         super(s);
     }
 
@@ -24,7 +24,7 @@ public class WriterException extends Exception {
      *
      * @param throwable - previous exception
      */
-    public WriterException(final Throwable throwable) {
+    public ReaderException(final Throwable throwable) {
         super(throwable);
     }
 
@@ -34,7 +34,7 @@ public class WriterException extends Exception {
      * @param s         - description message
      * @param throwable - previous exception
      */
-    public WriterException(final String s, final Throwable throwable) {
+    public ReaderException(final String s, final Throwable throwable) {
         super(s, throwable);
     }
 }

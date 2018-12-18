@@ -1,16 +1,16 @@
 package it.sevenbits.formatter.formatter.implementations;
 
-import it.sevenbits.formatter.exceptions.FormatterException;
-import it.sevenbits.formatter.exceptions.ReaderException;
-import it.sevenbits.formatter.exceptions.WriterException;
-import it.sevenbits.formatter.formatter.Formattable;
+import it.sevenbits.formatter.formatter.FormatterException;
+import it.sevenbits.formatter.readers.ReaderException;
+import it.sevenbits.formatter.writers.WriterException;
+import it.sevenbits.formatter.formatter.IFormatter;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 
 /**
  * Class that formats code by code style rules
  * */
-public class BasicFormatter implements Formattable {
+public class BasicFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;
     private final String EXTRA_SPACE = "    ";
     private final char LCBRACE = '{';

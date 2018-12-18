@@ -1,13 +1,12 @@
 package it.sevenbits.formatter.formatter;
 
-import it.sevenbits.formatter.exceptions.FormatterException;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 
 /**
  * Interface of formatter
  * */
-public interface Formattable {
+public interface IFormatter {
     /**
      * Format source
      * @param reader that contains source to format

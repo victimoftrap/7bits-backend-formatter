@@ -1,11 +1,11 @@
 package it.sevenbits.formatter.lexer.implementations;
 
-import it.sevenbits.formatter.exceptions.ReaderException;
+import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
-import it.sevenbits.formatter.exceptions.LexerException;
+import it.sevenbits.formatter.lexer.LexerException;
 
 import java.util.Map;
 import java.util.HashMap;

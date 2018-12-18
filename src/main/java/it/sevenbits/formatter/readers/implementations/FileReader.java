@@ -1,6 +1,6 @@
 package it.sevenbits.formatter.readers.implementations;
 
-import it.sevenbits.formatter.exceptions.ReaderException;
+import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.readers.IReader;
 
 import java.io.Reader;

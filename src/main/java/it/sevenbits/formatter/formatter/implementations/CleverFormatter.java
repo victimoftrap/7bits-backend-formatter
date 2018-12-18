@@ -1,19 +1,19 @@
 package it.sevenbits.formatter.formatter.implementations;
 
-import it.sevenbits.formatter.exceptions.FormatterException;
-import it.sevenbits.formatter.exceptions.WriterException;
+import it.sevenbits.formatter.formatter.FormatterException;
+import it.sevenbits.formatter.writers.WriterException;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.factory.ILexerFactory;
-import it.sevenbits.formatter.formatter.Formattable;
-import it.sevenbits.formatter.exceptions.LexerException;
+import it.sevenbits.formatter.formatter.IFormatter;
+import it.sevenbits.formatter.lexer.LexerException;
 
 /**
  * Realisation of formatter based on lexical analyzer
  * */
-public class CleverFormatter implements Formattable {
+public class CleverFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;
 
     private final String ID_OR_KEYWORD = "ID OR KEYWORD";

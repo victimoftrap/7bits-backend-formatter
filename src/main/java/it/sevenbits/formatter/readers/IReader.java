@@ -1,7 +1,5 @@
 package it.sevenbits.formatter.readers;
 
-import it.sevenbits.formatter.exceptions.ReaderException;
-
 /**
  * Interface for character reading from stream
  * */
