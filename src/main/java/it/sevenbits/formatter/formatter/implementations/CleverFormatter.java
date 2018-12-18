@@ -11,7 +11,7 @@ import it.sevenbits.formatter.formatter.IFormatter;
 import it.sevenbits.formatter.lexer.LexerException;
 
 /**
- * Realisation of formatter based on lexical analyzer
+ * Realisation of statemachine based on lexical analyzer
  */
 public class CleverFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;
@@ -32,9 +32,9 @@ public class CleverFormatter implements IFormatter {
     private boolean needNewLine;
 
     /**
-     * Constructor of lexer-based formatter
+     * Constructor of statemachine-based statemachine
      *
-     * @param lexerFactory that can create lexer by some reader
+     * @param lexerFactory that can create statemachine by some reader
      */
     public CleverFormatter(final ILexerFactory lexerFactory) {
         this.lexerFactory = lexerFactory;
@@ -83,7 +83,7 @@ public class CleverFormatter implements IFormatter {
      *
      * @param reader - instance that contains code for formatting
      * @param writer - instance where we would write formatted code
-     * @throws FormatterException if some troubles with lexer or writer happen
+     * @throws FormatterException if some troubles with statemachine or writer happen
      */
     @Override
     public void format(final IReader reader, final IWriter writer) throws FormatterException {
@@ -141,7 +141,7 @@ public class CleverFormatter implements IFormatter {
                 significantNow = false;
             }
         } catch (LexerException e) {
-            throw new FormatterException("Some trouble with lexer", e);
+            throw new FormatterException("Some trouble with statemachine", e);
         } catch (WriterException e) {
             throw new FormatterException("Some trouble with writer", e);
         }

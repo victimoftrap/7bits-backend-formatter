@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class FileLexerTest {
     @Test
     public void test() {
-        try (FileReader reader = new FileReader("./src/test/java/it/sevenbits/formatter/testdata/source")) {
+        try (FileReader reader = new FileReader("./src/test/java/it/sevenbits/statemachine/testdata/source")) {
             Lexer lexer = new Lexer(reader);
             assertEquals(new Token("ID OR KEYWORD", "fun"), lexer.readToken());
             assertEquals(new Token("ID OR KEYWORD", "someFunc"), lexer.readToken());

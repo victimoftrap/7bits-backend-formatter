@@ -8,11 +8,11 @@ import it.sevenbits.formatter.readers.IReader;
  */
 public interface ILexerFactory {
     /**
-     * Create lexer with current reader
+     * Create statemachine with current reader
      *
-     * @param type   type of needed lexer
+     * @param type   type of needed statemachine
      * @param reader some implementation of IReader
-     * @return created lexer
+     * @return created statemachine
      */
     ILexer getLexer(String type, IReader reader);
 }

@@ -2,6 +2,7 @@ package it.sevenbits.formatter.formatter.implementations;
 
 import it.sevenbits.formatter.formatter.IFormatter;
 import it.sevenbits.formatter.formatter.FormatterException;
+import it.sevenbits.formatter.formatter.statemachine.FormatterState;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.lexer.LexerException;
@@ -9,13 +10,12 @@ import it.sevenbits.formatter.lexer.factory.ILexerFactory;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.writers.IWriter;
 import it.sevenbits.formatter.writers.WriterException;
-import it.sevenbits.formatter.statemachine.State;
-import it.sevenbits.formatter.statemachine.formatter.TokenContext;
-import it.sevenbits.formatter.statemachine.formatter.FormatterStateMap;
-import it.sevenbits.formatter.statemachine.formatter.FormatterStateTransition;
-import it.sevenbits.formatter.statemachine.formatter.commands.IFormatterCommand;
-import it.sevenbits.formatter.statemachine.formatter.commands.FormatterCommandMap;
-import it.sevenbits.formatter.statemachine.formatter.commands.FormatterCommandTransition;
+import it.sevenbits.formatter.formatter.statemachine.TokenContext;
+import it.sevenbits.formatter.formatter.statemachine.transitions.FormatterStateMap;
+import it.sevenbits.formatter.formatter.statemachine.transitions.FormatterStateTransition;
+import it.sevenbits.formatter.formatter.statemachine.commands.IFormatterCommand;
+import it.sevenbits.formatter.formatter.statemachine.commands.FormatterCommandMap;
+import it.sevenbits.formatter.formatter.statemachine.commands.FormatterCommandTransition;
 
 /**
  * Class that implements IFormatter by state machine
@@ -27,9 +27,9 @@ public class StateMachineFormatter implements IFormatter {
     private FormatterCommandTransition commandTransition;
 
     /**
-     * Create state machine formatter
+     * Create formatter state machine
      *
-     * @param lexerFactory lexer factory that can create some lexical analyzer
+     * @param lexerFactory factory that can create some lexical analyzer
      */
     public StateMachineFormatter(final ILexerFactory lexerFactory) {
         this.lexerFactory = lexerFactory;
@@ -42,19 +42,19 @@ public class StateMachineFormatter implements IFormatter {
     public void format(final IReader reader, final IWriter writer) throws FormatterException {
         context.setWriter(writer);
         ILexer lex = lexerFactory.getLexer("STATE", reader);
-        State currentState = stateTransition.getStartState();
+        FormatterState currentState = stateTransition.getStartState();
 
         try {
             while (lex.hasNext()) {
                 IToken token = lex.readToken();
-                State nextState = stateTransition.getNextState(currentState, token.getName());
+                FormatterState nextState = stateTransition.getNextState(currentState, token.getName());
                 context.setToken(token);
                 IFormatterCommand command = commandTransition.nextCommand(currentState, token.getName());
                 command.execute();
                 currentState = nextState;
             }
         } catch (LexerException e) {
-            throw new FormatterException("Some troubles with lexer", e);
+            throw new FormatterException("Some troubles with statemachine", e);
         } catch (WriterException e) {
             throw new FormatterException("Some troubles with writer stream", e);
         }

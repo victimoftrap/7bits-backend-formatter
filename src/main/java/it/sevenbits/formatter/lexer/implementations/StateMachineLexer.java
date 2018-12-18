@@ -1,21 +1,21 @@
 package it.sevenbits.formatter.lexer.implementations;
 
+import it.sevenbits.formatter.lexer.statemachine.LexerState;
 import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.lexer.LexerException;
 import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.lexer.ILexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
-import it.sevenbits.formatter.statemachine.State;
-import it.sevenbits.formatter.statemachine.lexer.LexerStateMap;
-import it.sevenbits.formatter.statemachine.lexer.LexerStateTransition;
-import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
-import it.sevenbits.formatter.statemachine.lexer.commands.ILexerCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.LexerCommandMap;
-import it.sevenbits.formatter.statemachine.lexer.commands.LexerCommandTransition;
+import it.sevenbits.formatter.lexer.statemachine.transitions.LexerStateMap;
+import it.sevenbits.formatter.lexer.statemachine.transitions.LexerStateTransition;
+import it.sevenbits.formatter.lexer.statemachine.TokenBuilderContext;
+import it.sevenbits.formatter.lexer.statemachine.commands.ILexerCommand;
+import it.sevenbits.formatter.lexer.statemachine.commands.LexerCommandMap;
+import it.sevenbits.formatter.lexer.statemachine.commands.LexerCommandTransition;
 
 /**
- * Class that implements lexer interface by state machine
+ * Class that implements statemachine interface by state machine
  */
 public class StateMachineLexer implements ILexer {
     private IReader reader;
@@ -28,7 +28,7 @@ public class StateMachineLexer implements ILexer {
     }
 
     /**
-     * Create lexer
+     * Create statemachine
      *
      * @param reader stream with symbols
      */
@@ -44,7 +44,7 @@ public class StateMachineLexer implements ILexer {
      */
     @Override
     public IToken readToken() throws LexerException {
-        State current = lexerTransition.getStartState();
+        LexerState current = lexerTransition.getStartState();
         try {
             while (hasNext() && !current.toString().equals("RELEASE")) {
                 /*if (!isAnonymousChar) {
@@ -61,7 +61,7 @@ public class StateMachineLexer implements ILexer {
                     context.setCurrentChar(reader.read());
                 }
 
-                State next = lexerTransition.getNextState(current, context.getCurrentChar());
+                LexerState next = lexerTransition.getNextState(current, context.getCurrentChar());
                 context.setStateType(next.getType());
                 ILexerCommand command = commandTransition.nextCommand(current, context);
                 command.execute();

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Class of lexer analyzer
+ * Class of statemachine analyzer
  * */
 public class Lexer implements ILexer {
     private final char CURLY_LEFT_BRACKET = '{';
@@ -42,7 +42,7 @@ public class Lexer implements ILexer {
     }
 
     /**
-     * Creating lexer
+     * Creating statemachine
      * @param reader some IReader realisation
      * */
     public Lexer(final IReader reader) {
@@ -157,8 +157,8 @@ public class Lexer implements ILexer {
     }
 
     /**
-     * Check if lexer can create a new token
-     * @return true if lexer
+     * Check if statemachine can create a new token
+     * @return true if statemachine
      * */
     @Override
     public boolean hasNext() {
