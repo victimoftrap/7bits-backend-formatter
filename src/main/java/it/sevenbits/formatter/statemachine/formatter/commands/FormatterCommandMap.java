@@ -3,7 +3,11 @@ package it.sevenbits.formatter.statemachine.formatter.commands;
 import it.sevenbits.formatter.statemachine.Pair;
 import it.sevenbits.formatter.statemachine.State;
 import it.sevenbits.formatter.statemachine.formatter.TokenContext;
-import it.sevenbits.formatter.statemachine.formatter.commands.implementations.*;
+import it.sevenbits.formatter.statemachine.formatter.commands.implementations.AddTokenCommand;
+import it.sevenbits.formatter.statemachine.formatter.commands.implementations.AddNewLineCommand;
+import it.sevenbits.formatter.statemachine.formatter.commands.implementations.DecreaseIndentCommand;
+import it.sevenbits.formatter.statemachine.formatter.commands.implementations.IncreaseIndentCommand;
+import it.sevenbits.formatter.statemachine.formatter.commands.implementations.WriteSpaceBeforeCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +59,7 @@ public class FormatterCommandMap {
      *
      * @param currentState current state of automata
      * @param tokenType    type of current token
+     * @return next command to execute
      */
     public IFormatterCommand nextCommand(final State currentState, final String tokenType) {
         IFormatterCommand command = commandMap.get(new Pair<>(currentState, tokenType));

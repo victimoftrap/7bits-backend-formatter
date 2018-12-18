@@ -3,26 +3,30 @@ package it.sevenbits.formatter.statemachine.lexer.commands;
 import it.sevenbits.formatter.statemachine.Pair;
 import it.sevenbits.formatter.statemachine.State;
 import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.*;
+import it.sevenbits.formatter.statemachine.lexer.commands.implementations.IgnoreCommand;
+import it.sevenbits.formatter.statemachine.lexer.commands.implementations.AddToBufferCommand;
+import it.sevenbits.formatter.statemachine.lexer.commands.implementations.ReleaseTokenCommand;
+import it.sevenbits.formatter.statemachine.lexer.commands.implementations.RecognizeTypeCommand;
+import it.sevenbits.formatter.statemachine.lexer.commands.implementations.SaveAnonymousCharCommand;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class that holds map of commands in state machine
+ * Class that holds map of commands in lexer state machine
  */
-public class CommandMap {
+public class LexerCommandMap {
     private Map<Pair<State, Character>, ILexerCommand> commandMap;
 
-    private CommandMap() {
+    private LexerCommandMap() {
     }
 
     /**
-     * Create command map
+     * Create lexer command map
      *
      * @param context with details about characters
      */
-    public CommandMap(final TokenBuilderContext context) {
+    public LexerCommandMap(final TokenBuilderContext context) {
         this.commandMap = new HashMap<>();
         State releaseState = new State("RELEASE");
         State defaultState = new State("WAIT BEFORE");
@@ -97,7 +101,7 @@ public class CommandMap {
     /**
      * @param currentState of automata
      * @param context      with current char
-     * @return command for this situation
+     * @return lexer command for this situation
      */
     public ILexerCommand getCommand(final State currentState, final TokenBuilderContext context) {
         ILexerCommand command = commandMap.get(new Pair<>(currentState, context.getCurrentChar()));

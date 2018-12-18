@@ -4,25 +4,25 @@ import it.sevenbits.formatter.statemachine.State;
 import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
 
 /**
- * Class for running command transitions
+ * Class for running lexer command transitions
  */
-public class CommandTransition {
-    private CommandMap commandMap;
+public class LexerCommandTransition {
+    private LexerCommandMap commandMap;
 
-    private CommandTransition() {
+    private LexerCommandTransition() {
     }
 
     /**
-     * Create command transitions
+     * Create lexer command transitions
      *
      * @param commandMap map with commands
      */
-    public CommandTransition(final CommandMap commandMap) {
+    public LexerCommandTransition(final LexerCommandMap commandMap) {
         this.commandMap = commandMap;
     }
 
     /**
-     * Get command for state machine transition
+     * Get command for lexer state machine transition
      *
      * @param currentState current state of automata
      * @param context      with current situation in lexer

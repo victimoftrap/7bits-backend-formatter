@@ -3,7 +3,7 @@ package it.sevenbits.formatter.statemachine.lexer;
 import it.sevenbits.formatter.statemachine.State;
 
 /**
- * Interface for lexer map of states of automata
+ * Interface for lexer states map of automata
  */
 public interface ILexerStateMap {
     /**

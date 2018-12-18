@@ -11,8 +11,8 @@ import it.sevenbits.formatter.statemachine.lexer.LexerStateMap;
 import it.sevenbits.formatter.statemachine.lexer.LexerStateTransition;
 import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
 import it.sevenbits.formatter.statemachine.lexer.commands.ILexerCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.CommandMap;
-import it.sevenbits.formatter.statemachine.lexer.commands.CommandTransition;
+import it.sevenbits.formatter.statemachine.lexer.commands.LexerCommandMap;
+import it.sevenbits.formatter.statemachine.lexer.commands.LexerCommandTransition;
 
 /**
  * Class that implements lexer interface by state machine
@@ -21,7 +21,7 @@ public class StateMachineLexer implements ILexer {
     private IReader reader;
     private LexerStateTransition lexerTransition;
     private TokenBuilderContext context;
-    private CommandTransition commandTransition;
+    private LexerCommandTransition commandTransition;
     private boolean isAnonymousChar;
 
     private StateMachineLexer() {
@@ -36,7 +36,7 @@ public class StateMachineLexer implements ILexer {
         this.reader = reader;
         this.lexerTransition = new LexerStateTransition(new LexerStateMap());
         this.context = new TokenBuilderContext();
-        this.commandTransition = new CommandTransition(new CommandMap(context));
+        this.commandTransition = new LexerCommandTransition(new LexerCommandMap(context));
     }
 
     /**
