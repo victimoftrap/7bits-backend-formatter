@@ -15,6 +15,12 @@ public class TokenContext {
     private final int INDENT_SIZE = 4;
 
     /**
+     * Create default context
+     */
+    public TokenContext() {
+    }
+
+    /**
      * Create context class for formatter
      *
      * @param writer stream with previously written tokens

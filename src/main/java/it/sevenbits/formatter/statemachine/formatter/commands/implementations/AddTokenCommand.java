@@ -38,7 +38,7 @@ public class AddTokenCommand implements IFormatterCommand {
      */
     @Override
     public void execute() throws WriterException {
-        for (char c : context.getToken().getName().toCharArray()) {
+        for (char c : context.getToken().getLexeme().toCharArray()) {
             context.getWriter().write(c);
         }
 

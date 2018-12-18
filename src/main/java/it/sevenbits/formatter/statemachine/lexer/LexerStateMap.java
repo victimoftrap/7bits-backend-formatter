@@ -1,4 +1,4 @@
-package it.sevenbits.formatter.statemachine.lexer;
+package it.sevenbits.formatter.lexer.lexer;
 
 import it.sevenbits.formatter.statemachine.Pair;
 import it.sevenbits.formatter.statemachine.State;

@@ -39,8 +39,10 @@ public class AddNewLineCommand implements IFormatterCommand {
     @Override
     public void execute() throws WriterException {
         context.getWriter().write('\n');
-        for (int i = 0; i < context.getIndentSize(); i++) {
-            context.getWriter().write(' ');
+        for (int i = 0; i < context.getIndentLevel(); i++) {
+            for (int j = 0; j < context.getIndentSize(); j++) {
+                context.getWriter().write(' ');
+            }
         }
 
         if (nextInChain != null) {

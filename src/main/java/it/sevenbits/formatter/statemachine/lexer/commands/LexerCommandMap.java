@@ -1,13 +1,13 @@
-package it.sevenbits.formatter.statemachine.lexer.commands;
+package it.sevenbits.formatter.lexer.lexer.commands;
 
 import it.sevenbits.formatter.statemachine.Pair;
 import it.sevenbits.formatter.statemachine.State;
-import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.IgnoreCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.AddToBufferCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.ReleaseTokenCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.RecognizeTypeCommand;
-import it.sevenbits.formatter.statemachine.lexer.commands.implementations.SaveAnonymousCharCommand;
+import it.sevenbits.formatter.lexer.lexer.TokenBuilderContext;
+import it.sevenbits.formatter.lexer.lexer.commands.implementations.IgnoreCommand;
+import it.sevenbits.formatter.lexer.lexer.commands.implementations.AddToBufferCommand;
+import it.sevenbits.formatter.lexer.lexer.commands.implementations.ReleaseTokenCommand;
+import it.sevenbits.formatter.lexer.lexer.commands.implementations.RecognizeTypeCommand;
+import it.sevenbits.formatter.lexer.lexer.commands.implementations.SaveAnonymousCharCommand;
 
 import java.util.HashMap;
 import java.util.Map;

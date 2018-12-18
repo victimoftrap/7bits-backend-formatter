@@ -30,6 +30,9 @@ public class FormatterCommandMap {
         State semicolonState = new State("SEMICOLON");
         State curlyLeftBraceState = new State("CURLY_LEFT_BRACE");
         State curlyRightBraceState = new State("CURLY_RIGHT_BRACE");
+        State stringLiteralState = new State("STRING");
+        State inlineCommentState = new State("INLINE_COMMENT");
+        State multiLineCommentState = new State("MULTILINE_COMMENT");
 
         IFormatterCommand addToken = new AddTokenCommand(context);
         IFormatterCommand increase = new IncreaseIndentCommand(context);
@@ -39,19 +42,37 @@ public class FormatterCommandMap {
 
         IFormatterCommand spaceToken = new WriteSpaceBeforeCommand(context, addToken);
         IFormatterCommand spaceTokenIncrease = new WriteSpaceBeforeCommand(context, new AddTokenCommand(context, increase));
-        IFormatterCommand newLineToken = new AddNewLineCommand(context, addLine);
+        IFormatterCommand newLineToken = new AddNewLineCommand(context, addToken);
         IFormatterCommand decNewLineToken = new DecreaseIndentCommand(context, new AddNewLineCommand(context, addToken));
 
         commandMap.put(new Pair<>(startState, null), addToken);
+        commandMap.put(new Pair<>(startState, inlineCommentState.toString()), addToken);
+        commandMap.put(new Pair<>(startState, multiLineCommentState.toString()), addToken);
 
         commandMap.put(new Pair<>(listenState, null), spaceToken);
         commandMap.put(new Pair<>(listenState, curlyLeftBraceState.toString()), spaceTokenIncrease);
         commandMap.put(new Pair<>(listenState, semicolonState.toString()), addToken);
+        commandMap.put(new Pair<>(listenState, inlineCommentState.toString()), spaceToken);
+        commandMap.put(new Pair<>(listenState, multiLineCommentState.toString()), spaceToken);
+        commandMap.put(new Pair<>(listenState, curlyRightBraceState.toString()), decNewLineToken);
+
+        commandMap.put(new Pair<>(curlyLeftBraceState, null), newLineToken);
+        commandMap.put(new Pair<>(curlyLeftBraceState, inlineCommentState.toString()), newLineToken);
+        commandMap.put(new Pair<>(curlyLeftBraceState, multiLineCommentState.toString()), newLineToken);
 
         commandMap.put(new Pair<>(semicolonState, null), newLineToken);
         commandMap.put(new Pair<>(semicolonState, curlyRightBraceState.toString()), decNewLineToken);
+        commandMap.put(new Pair<>(semicolonState, inlineCommentState.toString()), spaceToken);
+        commandMap.put(new Pair<>(semicolonState, multiLineCommentState.toString()), newLineToken);
 
         commandMap.put(new Pair<>(curlyRightBraceState, null), newLineToken);
+        commandMap.put(new Pair<>(curlyRightBraceState, inlineCommentState.toString()), spaceToken);
+        commandMap.put(new Pair<>(curlyRightBraceState, multiLineCommentState.toString()), newLineToken);
+
+        commandMap.put(new Pair<>(inlineCommentState, null), newLineToken);
+        commandMap.put(new Pair<>(inlineCommentState, curlyLeftBraceState.toString()), newLineToken);
+
+        commandMap.put(new Pair<>(multiLineCommentState, null), newLineToken);
     }
 
     /**

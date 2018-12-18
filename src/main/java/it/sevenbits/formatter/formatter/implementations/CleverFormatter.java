@@ -12,7 +12,7 @@ import it.sevenbits.formatter.lexer.LexerException;
 
 /**
  * Realisation of formatter based on lexical analyzer
- * */
+ */
 public class CleverFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;
 
@@ -33,18 +33,20 @@ public class CleverFormatter implements IFormatter {
 
     /**
      * Constructor of lexer-based formatter
+     *
      * @param lexerFactory that can create lexer by some reader
-     * */
+     */
     public CleverFormatter(final ILexerFactory lexerFactory) {
         this.lexerFactory = lexerFactory;
     }
 
     /**
      * Write lexeme into writer instance
+     *
      * @param writer - instance of IWriter
      * @param lexeme that we would write
      * @throws WriterException if some trouble with writer happen
-     * */
+     */
     private void writeLexeme(final IWriter writer, final String lexeme) throws WriterException {
         for (char c : lexeme.toCharArray()) {
             writer.write(c);
@@ -53,9 +55,10 @@ public class CleverFormatter implements IFormatter {
 
     /**
      * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
+     *
      * @param writer - instance of IWriter
      * @throws WriterException if some trouble with writer happen
-     * */
+     */
     private void makeIndent(final IWriter writer) throws WriterException {
         for (int i = 0; i < indentLevel; i++) {
             for (int j = 0; j < INDENT_LENGTH; j++) {
@@ -66,9 +69,10 @@ public class CleverFormatter implements IFormatter {
 
     /**
      * Make new line in IWriter several times
+     *
      * @param writer - instance of IWriter
      * @throws WriterException if some trouble with writer happen
-     * */
+     */
     private void makeNewLine(final IWriter writer) throws WriterException {
         writer.write(CARRIAGE_RETURN);
         makeIndent(writer);
@@ -76,13 +80,14 @@ public class CleverFormatter implements IFormatter {
 
     /**
      * Format something in source
+     *
      * @param reader - instance that contains code for formatting
      * @param writer - instance where we would write formatted code
      * @throws FormatterException if some troubles with lexer or writer happen
-     * */
+     */
     @Override
     public void format(final IReader reader, final IWriter writer) throws FormatterException {
-        ILexer lexer = lexerFactory.getLexer(reader);
+        ILexer lexer = lexerFactory.getLexer("BASE", reader);
         significantBefore = true;
         significantNow = false;
         needNewLine = false;

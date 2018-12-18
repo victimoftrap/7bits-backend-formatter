@@ -1,7 +1,7 @@
-package it.sevenbits.formatter.statemachine.lexer.commands;
+package it.sevenbits.formatter.lexer.lexer.commands;
 
 import it.sevenbits.formatter.statemachine.State;
-import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
+import it.sevenbits.formatter.lexer.lexer.TokenBuilderContext;
 
 /**
  * Class for running lexer command transitions

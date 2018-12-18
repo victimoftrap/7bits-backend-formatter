@@ -1,4 +1,4 @@
 /**
  * Package for implementations of ILexerCommand
  * */
-package it.sevenbits.formatter.statemachine.lexer.commands.implementations;
+package it.sevenbits.formatter.lexer.lexer.commands.implementations;

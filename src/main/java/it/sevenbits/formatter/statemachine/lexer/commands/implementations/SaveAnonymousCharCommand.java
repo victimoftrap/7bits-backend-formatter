@@ -1,7 +1,7 @@
-package it.sevenbits.formatter.statemachine.lexer.commands.implementations;
+package it.sevenbits.formatter.lexer.lexer.commands.implementations;
 
-import it.sevenbits.formatter.statemachine.lexer.TokenBuilderContext;
-import it.sevenbits.formatter.statemachine.lexer.commands.ILexerCommand;
+import it.sevenbits.formatter.lexer.lexer.TokenBuilderContext;
+import it.sevenbits.formatter.lexer.lexer.commands.ILexerCommand;
 
 /**
  * Add char that we read while listening spaces into special buffer.
