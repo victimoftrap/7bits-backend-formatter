@@ -8,6 +8,7 @@ import it.sevenbits.formatter.statemachine.lexer.commands.ILexerCommand;
  */
 public class AddToBufferCommand implements ILexerCommand {
     private TokenBuilderContext context;
+    private ILexerCommand nextInChain;
 
     /**
      * Create command
@@ -18,8 +19,23 @@ public class AddToBufferCommand implements ILexerCommand {
         this.context = context;
     }
 
+    /**
+     * Create command and set next command to execute
+     *
+     * @param context context with current situation in lexer
+     * @param command that would execute after this command
+     */
+    public AddToBufferCommand(final TokenBuilderContext context, final ILexerCommand command) {
+        this.context = context;
+        this.nextInChain = command;
+    }
+
     @Override
     public void execute() {
         context.getLexemeBuffer().append(context.getCurrentChar());
+
+        if (nextInChain != null) {
+            nextInChain.execute();
+        }
     }
 }

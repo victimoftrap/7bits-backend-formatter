@@ -20,7 +20,7 @@ public class RecognizeTypeCommand implements ILexerCommand {
     }
 
     /**
-     * Create command
+     * Create command and set next command to execute
      *
      * @param context context with current situation in lexer
      * @param command that would execute after this command
