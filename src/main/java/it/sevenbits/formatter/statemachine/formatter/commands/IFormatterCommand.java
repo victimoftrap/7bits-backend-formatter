@@ -1,6 +1,6 @@
 package it.sevenbits.formatter.statemachine.formatter.commands;
 
-import it.sevenbits.formatter.exceptions.WriterException;
+import it.sevenbits.formatter.writers.WriterException;
 
 /**
  * Interface for formatter commands

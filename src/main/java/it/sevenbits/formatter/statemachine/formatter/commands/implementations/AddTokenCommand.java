@@ -1,7 +1,8 @@
-package it.sevenbits.formatter.statemachine.formatter.commands;
+package it.sevenbits.formatter.statemachine.formatter.commands.implementations;
 
-import it.sevenbits.formatter.exceptions.WriterException;
+import it.sevenbits.formatter.writers.WriterException;
 import it.sevenbits.formatter.statemachine.formatter.TokenContext;
+import it.sevenbits.formatter.statemachine.formatter.commands.IFormatterCommand;
 
 /**
  * Command for writing token in IWriter

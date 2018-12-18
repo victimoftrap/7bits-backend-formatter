@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class FormatterStateMap implements IFormatterStateMap {
     private Map<Pair<State, String>, State> stateMap;
-    private State defaultState = new State("LISTEN");
+    private State defaultState = new State("START");
     private String CURLY_LEFT_BRACE = "CURLY_LEFT_BRACE";
     private String CURLY_RIGHT_BRACE = "CURLY_RIGHT_BRACE";
     private String SEMICOLON = "SEMICOLON";
@@ -21,21 +21,24 @@ public class FormatterStateMap implements IFormatterStateMap {
      */
     public FormatterStateMap() {
         stateMap = new HashMap<>();
+        State listenState = new State("LISTEN");
         State semicolonState = new State(SEMICOLON);
         State curlyLeftBraceState = new State(CURLY_LEFT_BRACE);
         State curlyRightBraceState = new State(CURLY_RIGHT_BRACE);
 
-        stateMap.put(new Pair<>(defaultState, CURLY_LEFT_BRACE), curlyLeftBraceState);
-        stateMap.put(new Pair<>(defaultState, SEMICOLON), semicolonState);
-        stateMap.put(new Pair<>(defaultState, CURLY_RIGHT_BRACE), curlyRightBraceState);
-        stateMap.put(new Pair<>(defaultState, null), defaultState);
+        stateMap.put(new Pair<>(defaultState, null), listenState);
 
-        stateMap.put(new Pair<>(curlyLeftBraceState, null), defaultState);
+        stateMap.put(new Pair<>(listenState, CURLY_LEFT_BRACE), curlyLeftBraceState);
+        stateMap.put(new Pair<>(listenState, SEMICOLON), semicolonState);
+        stateMap.put(new Pair<>(listenState, CURLY_RIGHT_BRACE), curlyRightBraceState);
+        stateMap.put(new Pair<>(listenState, null), listenState);
 
-        stateMap.put(new Pair<>(semicolonState, null), defaultState);
+        stateMap.put(new Pair<>(curlyLeftBraceState, null), listenState);
+
+        stateMap.put(new Pair<>(semicolonState, null), listenState);
         stateMap.put(new Pair<>(semicolonState, CURLY_RIGHT_BRACE), curlyRightBraceState);
 
-        stateMap.put(new Pair<>(curlyRightBraceState, null), defaultState);
+        stateMap.put(new Pair<>(curlyRightBraceState, null), listenState);
     }
 
     /**
