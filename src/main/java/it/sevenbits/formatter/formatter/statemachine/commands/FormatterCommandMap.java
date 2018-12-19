@@ -71,6 +71,7 @@ public class FormatterCommandMap {
 
         commandMap.put(new Pair<>(inlineCommentState, null), newLineToken);
         commandMap.put(new Pair<>(inlineCommentState, curlyLeftBraceState.toString()), newLineToken);
+        commandMap.put(new Pair<>(inlineCommentState, curlyRightBraceState.toString()), decNewLineToken);
 
         commandMap.put(new Pair<>(multiLineCommentState, null), newLineToken);
     }

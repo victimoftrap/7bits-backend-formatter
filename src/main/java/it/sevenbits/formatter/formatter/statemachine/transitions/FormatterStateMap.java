@@ -58,6 +58,7 @@ public class FormatterStateMap implements IFormatterStateMap {
 
         stateMap.put(new Pair<>(inlineCommentState, null), listenState);
         stateMap.put(new Pair<>(inlineCommentState, CURLY_LEFT_BRACE), curlyLeftBraceState);
+        stateMap.put(new Pair<>(inlineCommentState, CURLY_RIGHT_BRACE), curlyRightBraceState);
 
         stateMap.put(new Pair<>(multiLineCommentState, null), listenState);
     }

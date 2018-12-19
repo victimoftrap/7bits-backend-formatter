@@ -13,9 +13,21 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class LexerTest {
+    public void compareTokens(List<IToken> expected, ILexer actual) throws LexerException {
+        int i = 0;
+        while (actual.hasNext()) {
+            IToken token = actual.readToken();
+            assertEquals(expected.get(i).getName(), token.getName());
+            assertEquals(expected.get(i).getLexeme(), token.getLexeme());
+            i++;
+        }
+        assertEquals(expected.size(), i);
+    }
+
     @Test
     public void test1() throws LexerException {
         Lexer lex = new Lexer(new StringReader(" func   {  x  } "));
+
         IToken token0 = new Token("ID OR KEYWORD", "func");
         IToken token1 = new Token("CURLY LEFT BRACKET", "{");
         IToken token2 = new Token("ID OR KEYWORD", "x");
@@ -23,19 +35,13 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(4, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test2() throws LexerException {
         Lexer lex = new Lexer(new StringReader("   func   {   x;   }   "));
+
         IToken token0 = new Token("ID OR KEYWORD", "func");
         IToken token1 = new Token("CURLY LEFT BRACKET", "{");
         IToken token2 = new Token("ID OR KEYWORD", "x");
@@ -44,19 +50,13 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3, token4);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(5, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test3() throws LexerException {
         Lexer lex = new Lexer(new StringReader("func{x}"));
+
         IToken token0 = new Token("ID OR KEYWORD", "func");
         IToken token1 = new Token("CURLY LEFT BRACKET", "{");
         IToken token2 = new Token("ID OR KEYWORD", "x");
@@ -64,19 +64,13 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(4, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test4() throws LexerException {
         Lexer lex = new Lexer(new StringReader("func{x;y;}"));
+
         IToken token0 = new Token("ID OR KEYWORD", "func");
         IToken token1 = new Token("CURLY LEFT BRACKET", "{");
         IToken token2 = new Token("ID OR KEYWORD", "x");
@@ -87,19 +81,13 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5, token6);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(7, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test5() throws LexerException {
         Lexer lex = new Lexer(new StringReader("{{{}}}"));
+
         IToken token0 = new Token("CURLY LEFT BRACKET", "{");
         IToken token1 = new Token("CURLY LEFT BRACKET", "{");
         IToken token2 = new Token("CURLY LEFT BRACKET", "{");
@@ -109,19 +97,13 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(6, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test6() throws LexerException {
         Lexer lex = new Lexer(new StringReader("     void\n\n\n\n"));
+
         IToken token0 = new Token("ID OR KEYWORD", "void");
         List<IToken> tokens = new ArrayList<>();
         tokens.add(token0);
@@ -134,6 +116,7 @@ public class LexerTest {
     @Test
     public void test7() throws LexerException {
         Lexer lex = new Lexer(new StringReader("  int \n  func  ( \n\n  )  {  return  x  ;}"));
+
         IToken token0 = new Token("ID OR KEYWORD", "int");
         IToken token1 = new Token("ID OR KEYWORD", "func");
         IToken token2 = new Token("ROUND LEFT BRACKET", "(");
@@ -146,19 +129,13 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5, token6, token7, token8);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(9, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test8() throws LexerException {
         Lexer lex = new Lexer(new StringReader("int f(char x){return x;}"));
+
         IToken token0 = new Token("ID OR KEYWORD", "int");
         IToken token1 = new Token("ID OR KEYWORD", "f");
         IToken token2 = new Token("ROUND LEFT BRACKET", "(");
@@ -173,19 +150,14 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5, token6, token7, token8, token9, token10);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(11, i);
+        compareTokens(tokens, lex);
     }
 
     @Test
     public void test9() throws LexerException {
-        Lexer lex = new Lexer(new StringReader("\n   int    f  \n\n\n    (   char  \n    x )    {    return  \n   x     ;      }"));
+        Lexer lex = new Lexer(
+                new StringReader("\n   int    f  \n\n\n    (   char  \n    x )    {    return  \n   x     ;      }"));
+
         IToken token0 = new Token("ID OR KEYWORD", "int");
         IToken token1 = new Token("ID OR KEYWORD", "f");
         IToken token2 = new Token("ROUND LEFT BRACKET", "(");
@@ -200,13 +172,6 @@ public class LexerTest {
         List<IToken> tokens = new ArrayList<>();
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5, token6, token7, token8, token9, token10);
 
-        int i = 0;
-        while (lex.hasNext()) {
-            IToken token = lex.readToken();
-            assertEquals(tokens.get(i).getName(), token.getName());
-            assertEquals(tokens.get(i).getLexeme(), token.getLexeme());
-            i++;
-        }
-        assertEquals(11, i);
+        compareTokens(tokens, lex);
     }
 }
