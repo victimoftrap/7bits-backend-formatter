@@ -53,46 +53,58 @@ public class LexerCommandMap {
 
         commandMap.put(new Pair<>(defaultState, ' '), ignore);
         commandMap.put(new Pair<>(defaultState, '\n'), ignore);
+        commandMap.put(new Pair<>(defaultState, '\"'), recognizeAdd);
+        commandMap.put(new Pair<>(defaultState, ';'), recognizeAdd);
+        commandMap.put(new Pair<>(defaultState, '{'), recognizeAdd);
+        commandMap.put(new Pair<>(defaultState, '}'), recognizeAdd);
         commandMap.put(new Pair<>(defaultState, null), recognizeAdd);
 
-        commandMap.put(new Pair<>(idState, null), add);
+        // sample text
         commandMap.put(new Pair<>(idState, ' '), ignore);
         commandMap.put(new Pair<>(idState, '\n'), ignore);
         commandMap.put(new Pair<>(idState, ';'), releaseSave);
+        commandMap.put(new Pair<>(idState, '{'), releaseSave);
+        commandMap.put(new Pair<>(idState, '}'), releaseSave);
+        commandMap.put(new Pair<>(idState, null), add);
 
+        // ;
         commandMap.put(new Pair<>(semicolonState, ' '), ignore);
         commandMap.put(new Pair<>(semicolonState, '\n'), ignore);
         commandMap.put(new Pair<>(semicolonState, null), releaseSave);
 
+        // {
         commandMap.put(new Pair<>(curlyLeftBraceState, ' '), ignore);
         commandMap.put(new Pair<>(curlyLeftBraceState, '\n'), ignore);
         commandMap.put(new Pair<>(curlyLeftBraceState, null), releaseSave);
 
+        // }
         commandMap.put(new Pair<>(curlyRightBraceState, ' '), ignore);
         commandMap.put(new Pair<>(curlyRightBraceState, '\n'), ignore);
         commandMap.put(new Pair<>(curlyRightBraceState, null), releaseSave);
 
+        // avoiding spaces
         commandMap.put(new Pair<>(waitAfterState, ' '), ignore);
         commandMap.put(new Pair<>(waitAfterState, '\n'), ignore);
         commandMap.put(new Pair<>(waitAfterState, null), releaseSave);
 
+        // "sample text"
         commandMap.put(new Pair<>(stringLiteralState, null), add);
         commandMap.put(new Pair<>(stringLiteralState, '\"'), add);
 
-        //
+        // comment translations
         commandMap.put(new Pair<>(defaultState, '/'), add);
 
         commandMap.put(new Pair<>(slashState, ' '), recognize);
         commandMap.put(new Pair<>(slashState, '\n'), recognize);
+        commandMap.put(new Pair<>(slashState, null), recognizeSave);
         commandMap.put(new Pair<>(slashState, '/'), recognizeAdd);
         commandMap.put(new Pair<>(slashState, '*'), recognizeAdd);
-        commandMap.put(new Pair<>(slashState, null), recognizeSave);
 
-        commandMap.put(new Pair<>(inlineCommentState, null), add);
         commandMap.put(new Pair<>(inlineCommentState, '\n'), ignore);
+        commandMap.put(new Pair<>(inlineCommentState, null), add);
 
-        commandMap.put(new Pair<>(multiLineCommentState, null), add);
         commandMap.put(new Pair<>(multiLineCommentState, '*'), add);
+        commandMap.put(new Pair<>(multiLineCommentState, null), add);
 
         commandMap.put(new Pair<>(lastAsteriskState, '/'), add);
         commandMap.put(new Pair<>(lastAsteriskState, null), add);

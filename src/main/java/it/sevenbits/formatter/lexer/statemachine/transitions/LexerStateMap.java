@@ -86,8 +86,8 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(inlineCommentState, '\n'), waitAfterState);
         stateMap.put(new Pair<>(inlineCommentState, null), inlineCommentState);
 
-        stateMap.put(new Pair<>(multiLineCommentState, null), multiLineCommentState);
         stateMap.put(new Pair<>(multiLineCommentState, '*'), lastAsteriskState);
+        stateMap.put(new Pair<>(multiLineCommentState, null), multiLineCommentState);
 
         stateMap.put(new Pair<>(lastAsteriskState, '/'), waitAfterState);
         stateMap.put(new Pair<>(lastAsteriskState, null), multiLineCommentState);
