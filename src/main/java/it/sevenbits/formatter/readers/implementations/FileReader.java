@@ -32,7 +32,7 @@ public class FileReader implements IReader, AutoCloseable {
             reader = Files.newBufferedReader(Paths.get(path), Charset.forName("UTF-8"));
             currentSymbol = 0;
         } catch (IOException e) {
-            throw new ReaderException(e);
+            throw new ReaderException("Cannot create stream", e);
         }
     }
 
@@ -55,7 +55,7 @@ public class FileReader implements IReader, AutoCloseable {
             currentSymbol = reader.read();
             return (char) currentSymbol;
         } catch (IOException e) {
-            throw new ReaderException(e);
+            throw new ReaderException("Cannot read symbol from file", e);
         }
     }
 
@@ -68,7 +68,7 @@ public class FileReader implements IReader, AutoCloseable {
         try {
             reader.close();
         } catch (IOException e) {
-            throw new ReaderException("Cannot close file", e);
+            throw new ReaderException("Trouble with closing file", e);
         }
     }
 }

@@ -1,6 +1,5 @@
 package it.sevenbits.formatter.formatter.statemachine.commands.implementations;
 
-import it.sevenbits.formatter.writers.IWriter;
 import it.sevenbits.formatter.writers.WriterException;
 import it.sevenbits.formatter.formatter.statemachine.TokenContext;
 import it.sevenbits.formatter.formatter.statemachine.commands.IFormatterCommand;

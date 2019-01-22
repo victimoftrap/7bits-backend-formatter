@@ -13,10 +13,6 @@ import it.sevenbits.formatter.lexer.statemachine.TokenBuilderContext;
 import it.sevenbits.formatter.lexer.statemachine.commands.ILexerCommand;
 import it.sevenbits.formatter.lexer.statemachine.commands.LexerCommandMap;
 import it.sevenbits.formatter.lexer.statemachine.commands.LexerCommandTransition;
-import it.sevenbits.formatter.readers.implementations.StringReader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that implements statemachine interface by state machine
@@ -96,13 +92,5 @@ public class StateMachineLexer implements ILexer {
     @Override
     public boolean hasNext() {
         return reader.hasNext() || context.getNextLexemeChar() != 0;
-    }
-
-    public static void main(String[] args) throws LexerException {
-        StateMachineLexer lexer = new StateMachineLexer(new StringReader("func{x;\"literal\";}"));
-        List<IToken> list = new ArrayList<>();
-        while (lexer.hasNext()) {
-            list.add(lexer.readToken());
-        }
     }
 }

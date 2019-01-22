@@ -30,7 +30,7 @@ public class FileWriter implements IWriter, AutoCloseable {
         try {
             writer = Files.newBufferedWriter(Paths.get(path), Charset.forName("UTF-8"));
         } catch (IOException e) {
-            throw new WriterException(e);
+            throw new WriterException("Cannot create stream", e);
         }
     }
 
@@ -44,7 +44,7 @@ public class FileWriter implements IWriter, AutoCloseable {
         try {
             writer.write(c);
         } catch (IOException e) {
-            throw new WriterException(e);
+            throw new WriterException("Cannot write symbol to file", e);
         }
     }
 
@@ -57,7 +57,7 @@ public class FileWriter implements IWriter, AutoCloseable {
         try {
             writer.close();
         } catch (IOException e) {
-            throw new WriterException(e);
+            throw new WriterException("Trouble with closing file", e);
         }
     }
 }
