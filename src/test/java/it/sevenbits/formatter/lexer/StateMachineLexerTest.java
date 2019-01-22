@@ -3,6 +3,7 @@ package it.sevenbits.formatter.lexer;
 import it.sevenbits.formatter.lexer.implementations.StateMachineLexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
+import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.readers.implementations.StringReader;
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class StateMachineLexerTest {
     }
 
     @Test
-    public void simpleCodeTest() throws LexerException {
+    public void simpleCodeTest() throws LexerException, ReaderException {
         ILexer state = new StateMachineLexer(new StringReader("   func  \n   {  x ;  }  \n "));
 
         IToken token0 = new Token("ID", "func");
@@ -40,7 +41,7 @@ public class StateMachineLexerTest {
     }
 
     @Test
-    public void codeWithoutSpaceInEndTest() throws LexerException {
+    public void codeWithoutSpaceInEndTest() throws LexerException, ReaderException {
         ILexer state = new StateMachineLexer(new StringReader(" func  \n {  x  ; }"));
         IToken token0 = new Token("ID", "func");
         IToken token1 = new Token("CURLY_LEFT_BRACE", "{");
@@ -54,7 +55,7 @@ public class StateMachineLexerTest {
     }
 
     @Test
-    public void codeWithStringLiteralTest() throws LexerException {
+    public void codeWithStringLiteralTest() throws LexerException, ReaderException {
         ILexer state = new StateMachineLexer(new StringReader(" func   {  x;  \" abceda   \";  } "));
 
         IToken token0 = new Token("ID", "func");
@@ -71,7 +72,7 @@ public class StateMachineLexerTest {
     }
 
     @Test
-    public void codeWithInlineCommentTest() throws LexerException {
+    public void codeWithInlineCommentTest() throws LexerException, ReaderException {
         ILexer state = new StateMachineLexer(new StringReader(" func   {  x; //sample text  ! \n \" abceda   \";  } "));
 
         IToken token0 = new Token("ID", "func");
@@ -89,7 +90,7 @@ public class StateMachineLexerTest {
     }
 
     @Test
-    public void codeWithCommentsTest() throws LexerException {
+    public void codeWithCommentsTest() throws LexerException, ReaderException {
         ILexer state = new StateMachineLexer(
                 new StringReader(" func   {  x; //this\n \"abceda\"; /* and  this  */ } "));
 

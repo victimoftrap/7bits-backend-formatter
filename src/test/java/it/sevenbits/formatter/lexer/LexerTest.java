@@ -3,6 +3,7 @@ package it.sevenbits.formatter.lexer;
 import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
+import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.readers.implementations.StringReader;
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test1() throws LexerException {
+    public void test1() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader(" func   {  x  } "));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -39,7 +40,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test2() throws LexerException {
+    public void test2() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("   func   {   x;   }   "));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -54,7 +55,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test3() throws LexerException {
+    public void test3() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("func{x}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -68,7 +69,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test4() throws LexerException {
+    public void test4() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("func{x;y;}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -85,7 +86,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test5() throws LexerException {
+    public void test5() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("{{{}}}"));
 
         IToken token0 = new Token("CURLY LEFT BRACKET", "{");
@@ -101,7 +102,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test6() throws LexerException {
+    public void test6() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("     void\n\n\n\n"));
 
         IToken token0 = new Token("ID OR KEYWORD", "void");
@@ -114,7 +115,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test7() throws LexerException {
+    public void test7() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("  int \n  func  ( \n\n  )  {  return  x  ;}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "int");
@@ -133,7 +134,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test8() throws LexerException {
+    public void test8() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("int f(char x){return x;}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "int");
@@ -154,7 +155,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test9() throws LexerException {
+    public void test9() throws LexerException, ReaderException {
         Lexer lex = new Lexer(
                 new StringReader("\n   int    f  \n\n\n    (   char  \n    x )    {    return  \n   x     ;      }"));
 

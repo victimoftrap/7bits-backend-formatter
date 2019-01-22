@@ -1,3 +1,4 @@
-fun someFunc(char x) {
-    return x;
+fun someFunc(char x)
+ {
+return x;
 }
