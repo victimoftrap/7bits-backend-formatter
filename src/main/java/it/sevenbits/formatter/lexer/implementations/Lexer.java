@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Class of statemachine analyzer
- * */
+ * Class of lexical analyzer
+ */
 public class Lexer implements ILexer {
     private final char CURLY_LEFT_BRACKET = '{';
     private final char CURLY_RIGHT_BRACKET = '}';
@@ -37,14 +37,15 @@ public class Lexer implements ILexer {
 
     /**
      * Forbidden empty constructor
-     * */
-    private Lexer(){
+     */
+    private Lexer() {
     }
 
     /**
-     * Creating statemachine
+     * Creating lexer
+     *
      * @param reader some IReader realisation
-     * */
+     */
     public Lexer(final IReader reader) {
         this.reader = reader;
         separators = new HashMap<>();
@@ -57,9 +58,10 @@ public class Lexer implements ILexer {
 
     /**
      * Creates new token if previously reading char wasn't a lexeme or returns created previously token
+     *
      * @param accumulator with some string
      * @return token
-     * */
+     */
     private IToken createToken(final StringBuilder accumulator) {
         IToken token = separators.get(previousChar);
         if (token != null) {
@@ -69,12 +71,12 @@ public class Lexer implements ILexer {
         }
     }
 
-    /**
-     * Creates new token or return previously created token
-     * @param lexeme string created from reader
-     * @param c this lexeme or last char from lexeme
-     * @return token
-     * */
+//    /**
+//     * Creates new token or return previously created token
+//     * @param lexeme string created from reader
+//     * @param c this lexeme or last char from lexeme
+//     * @return token
+//     * */
 //    private IToken createTokenBy(final String lexeme, final char c) {
 //        IToken token = separators.get(c);
 //        if (token != null) {
@@ -87,9 +89,10 @@ public class Lexer implements ILexer {
 
     /**
      * Reads token from source
+     *
      * @return next IToken
      * @throws LexerException if some trouble happen
-     * */
+     */
     @Override
     public IToken readToken() throws LexerException {
         StringBuilder sb = new StringBuilder();
@@ -157,11 +160,12 @@ public class Lexer implements ILexer {
     }
 
     /**
-     * Check if statemachine can create a new token
-     * @return true if statemachine
-     * */
+     * Check if lexer can create a new token
+     *
+     * @return true if lexer can create token
+     */
     @Override
     public boolean hasNext() {
-        return reader.hasNext() || lastChild ;
+        return reader.hasNext() || lastChild;
     }
 }

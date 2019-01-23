@@ -11,7 +11,7 @@ import it.sevenbits.formatter.formatter.IFormatter;
 import it.sevenbits.formatter.lexer.LexerException;
 
 /**
- * Realisation of statemachine based on lexical analyzer
+ * Realisation of formatter based on lexical analyzer
  */
 public class CleverFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;

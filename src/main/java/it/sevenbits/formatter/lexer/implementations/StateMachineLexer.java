@@ -15,7 +15,7 @@ import it.sevenbits.formatter.lexer.statemachine.commands.LexerCommandMap;
 import it.sevenbits.formatter.lexer.statemachine.commands.LexerCommandTransition;
 
 /**
- * Class that implements statemachine interface by state machine
+ * Class that implements lexer interface by state machine
  */
 public class StateMachineLexer implements ILexer {
     private IReader reader;
@@ -28,7 +28,7 @@ public class StateMachineLexer implements ILexer {
     }
 
     /**
-     * Create statemachine
+     * Create state machine lexer
      *
      * @param reader stream with symbols
      */

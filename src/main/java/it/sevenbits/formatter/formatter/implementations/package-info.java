@@ -1,5 +1,5 @@
 /**
- * Realisations of statemachine interface
- * */
+ * Realisations of formatter interface
+ */
 
 package it.sevenbits.formatter.formatter.implementations;

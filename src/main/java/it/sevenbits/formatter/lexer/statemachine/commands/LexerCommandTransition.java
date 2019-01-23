@@ -4,7 +4,7 @@ import it.sevenbits.formatter.lexer.statemachine.LexerState;
 import it.sevenbits.formatter.lexer.statemachine.TokenBuilderContext;
 
 /**
- * Class for running statemachine command transitions
+ * Class for running lexer command transitions
  */
 public class LexerCommandTransition {
     private LexerCommandMap commandMap;

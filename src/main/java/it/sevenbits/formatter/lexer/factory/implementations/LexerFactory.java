@@ -17,7 +17,7 @@ public class LexerFactory implements ILexerFactory {
     }
 
     /**
-     * Create statemachine with current reader
+     * Create lexer factory with current reader
      *
      * @param type   type of needed lexer
      *               "BASE" - base implementation of lexer

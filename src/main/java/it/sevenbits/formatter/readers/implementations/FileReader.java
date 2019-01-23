@@ -11,22 +11,23 @@ import java.io.IOException;
 
 /**
  * Implementation of IReader that reads characters from file
- * */
+ */
 public class FileReader implements IReader, AutoCloseable {
     private Reader reader;
     private int currentSymbol;
 
     /**
      * Forbidden empty constructor
-     * */
-    private FileReader(){
+     */
+    private FileReader() {
     }
 
     /**
      * Create FileReader by path to file
+     *
      * @param path - path to file
      * @throws ReaderException if some troubles with file happen
-     * */
+     */
     public FileReader(final String path) throws ReaderException {
         try {
             reader = Files.newBufferedReader(Paths.get(path), Charset.forName("UTF-8"));
@@ -38,8 +39,9 @@ public class FileReader implements IReader, AutoCloseable {
 
     /**
      * Check if string has character after current position
+     *
      * @return true if string has character, else false
-     * */
+     */
     @Override
     public boolean hasNext() {
         return currentSymbol != -1;
@@ -47,8 +49,9 @@ public class FileReader implements IReader, AutoCloseable {
 
     /**
      * Read character in current position and increase position if string has more characters
+     *
      * @return character in current position
-     * */
+     */
     @Override
     public char read() throws ReaderException {
         try {
@@ -61,8 +64,9 @@ public class FileReader implements IReader, AutoCloseable {
 
     /**
      * Close file stream
+     *
      * @throws ReaderException if file cannot be closed
-     * */
+     */
     @Override
     public void close() throws ReaderException {
         try {

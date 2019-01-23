@@ -9,7 +9,7 @@ import it.sevenbits.formatter.writers.IWriter;
 
 /**
  * Class that formats code by code style rules
- * */
+ */
 public class BasicFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;
     private final String EXTRA_SPACE = "    ";
@@ -28,8 +28,9 @@ public class BasicFormatter implements IFormatter {
 
     /**
      * Make several times standard indent of 4 spaces in IWriter depending of the level of nesting
+     *
      * @param writer - instance of IWriter
-     * */
+     */
     private void makeIndent(final IWriter writer) throws WriterException {
         for (int i = 0; i < indentLevel; i++) {
             for (int j = 0; j < INDENT_LENGTH; j++) {
@@ -40,8 +41,9 @@ public class BasicFormatter implements IFormatter {
 
     /**
      * Make new line in IWriter several times
+     *
      * @param writer - instance of IWriter
-     * */
+     */
     private void makeNewLine(final IWriter writer) throws WriterException {
         writer.write(CARRIAGE_RETURN);
         makeIndent(writer);
@@ -49,10 +51,11 @@ public class BasicFormatter implements IFormatter {
 
     /**
      * Method that formats code
+     *
      * @param reader - instance that contains code for formatting
      * @param writer - instance where we would write formatted code
      * @throws FormatterException if was trouble with streams
-     * */
+     */
     public void format(final IReader reader, final IWriter writer) throws FormatterException {
         boolean significantBefore = true;
         boolean significantNow = false;
