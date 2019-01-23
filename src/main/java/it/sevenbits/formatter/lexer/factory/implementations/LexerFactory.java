@@ -7,7 +7,7 @@ import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.lexer.factory.ILexerFactory;
 
 /**
- * Realisation of statemachine factory
+ * Realisation of lexer factory
  */
 public class LexerFactory implements ILexerFactory {
     /**
@@ -19,9 +19,12 @@ public class LexerFactory implements ILexerFactory {
     /**
      * Create statemachine with current reader
      *
-     * @param type   type of needed statemachine
+     * @param type   type of needed lexer
+     *               "BASE" - base implementation of lexer
+     *               "STATE" - implementation based on state machine
+     *               other string - would return null
      * @param reader some implementation of IReader
-     * @return created statemachine
+     * @return created lexer
      */
     @Override
     public ILexer getLexer(final String type, final IReader reader) {

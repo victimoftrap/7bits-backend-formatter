@@ -3,6 +3,7 @@ package it.sevenbits.formatter.lexer;
 import it.sevenbits.formatter.lexer.implementations.Lexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
+import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.readers.implementations.StringReader;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class LexerTest {
     public void compareTokens(List<IToken> expected, ILexer actual) throws LexerException {
@@ -26,7 +28,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test1() throws LexerException, ReaderException {
+    public void simpleCodeTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader(" func   {  x  } "));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -40,7 +42,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test2() throws LexerException, ReaderException {
+    public void codeWithSemicolonTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("   func   {   x;   }   "));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -55,7 +57,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test3() throws LexerException, ReaderException {
+    public void codeWithoutSpacesTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("func{x}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -69,7 +71,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test4() throws LexerException, ReaderException {
+    public void codeWithSemicolonsAndWithoutSpacesTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("func{x;y;}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "func");
@@ -86,7 +88,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test5() throws LexerException, ReaderException {
+    public void bracketTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("{{{}}}"));
 
         IToken token0 = new Token("CURLY LEFT BRACKET", "{");
@@ -102,7 +104,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test6() throws LexerException, ReaderException {
+    public void oneKeywordWithRubbishTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("     void\n\n\n\n"));
 
         IToken token0 = new Token("ID OR KEYWORD", "void");
@@ -115,7 +117,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test7() throws LexerException, ReaderException {
+    public void codeOfFunctionTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("  int \n  func  ( \n\n  )  {  return  x  ;}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "int");
@@ -134,7 +136,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test8() throws LexerException, ReaderException {
+    public void codeOfFunctionWithParamsWithoutRubbishTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(new StringReader("int f(char x){return x;}"));
 
         IToken token0 = new Token("ID OR KEYWORD", "int");
@@ -155,7 +157,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test9() throws LexerException, ReaderException {
+    public void codeOfFunctionWithParamsWithRubbishTest() throws LexerException, ReaderException {
         Lexer lex = new Lexer(
                 new StringReader("\n   int    f  \n\n\n    (   char  \n    x )    {    return  \n   x     ;      }"));
 
@@ -174,5 +176,17 @@ public class LexerTest {
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5, token6, token7, token8, token9, token10);
 
         compareTokens(tokens, lex);
+    }
+
+    @Test(expected = LexerException.class)
+    public void exceptionOnReaderTest() throws LexerException, ReaderException {
+        IReader reader = mock(IReader.class);
+        when(reader.hasNext()).thenReturn(true);
+        doThrow(ReaderException.class).when(reader).read();
+
+        Lexer lexer = new Lexer(reader);
+        assertTrue(lexer.hasNext());
+
+        lexer.readToken();
     }
 }

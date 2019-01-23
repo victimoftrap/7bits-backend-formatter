@@ -75,15 +75,15 @@ public class Lexer implements ILexer {
      * @param c this lexeme or last char from lexeme
      * @return token
      * */
-    private IToken createTokenBy(final String lexeme, final char c) {
-        IToken token = separators.get(c);
-        if (token != null) {
-            return token;
-        } else {
-            // где-то тут проверка на то, что это ключевое слово
-            return new Token("ID OR KEYWORD", lexeme);
-        }
-    }
+//    private IToken createTokenBy(final String lexeme, final char c) {
+//        IToken token = separators.get(c);
+//        if (token != null) {
+//            return token;
+//        } else {
+//            // где-то тут проверка на то, что это ключевое слово
+//            return new Token("ID OR KEYWORD", lexeme);
+//        }
+//    }
 
     /**
      * Reads token from source

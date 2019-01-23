@@ -3,6 +3,7 @@ package it.sevenbits.formatter.lexer;
 import it.sevenbits.formatter.lexer.implementations.StateMachineLexer;
 import it.sevenbits.formatter.lexer.token.IToken;
 import it.sevenbits.formatter.lexer.token.implementations.Token;
+import it.sevenbits.formatter.readers.IReader;
 import it.sevenbits.formatter.readers.ReaderException;
 import it.sevenbits.formatter.readers.implementations.StringReader;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class StateMachineLexerTest {
     public void compareTokens(List<IToken> expected, ILexer actual) throws LexerException {
@@ -107,5 +110,24 @@ public class StateMachineLexerTest {
         Collections.addAll(tokens, token0, token1, token2, token3, token4, token5, token6, token7, token8);
 
         compareTokens(tokens, state);
+    }
+
+    @Test(expected = LexerException.class)
+    public void exceptionOnReaderTest() throws LexerException, ReaderException {
+        IReader reader = mock(IReader.class);
+        when(reader.hasNext()).thenReturn(true);
+        doThrow(ReaderException.class).when(reader).read();
+
+        ILexer lexer = new StateMachineLexer(reader);
+        assertTrue(lexer.hasNext());
+
+        lexer.readToken();
+    }
+
+    @Test(expected = LexerException.class)
+    public void emptyReaderForLexer() throws ReaderException, LexerException {
+        ILexer lexer = new StateMachineLexer(new StringReader(""));
+
+        lexer.readToken();
     }
 }

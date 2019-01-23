@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class FileWriterTest {
     @Rule
@@ -28,5 +29,21 @@ public class FileWriterTest {
             writer.write('!');
         }
         assertEquals(5, Files.size(file.toPath()));
+    }
+
+    @Test(expected = WriterException.class)
+    public void exceptionOnWriteTest() throws WriterException {
+        FileWriter writer = mock(FileWriter.class);
+
+        doThrow(WriterException.class).when(writer).write(any(Character.class));
+        writer.write('c');
+    }
+
+    @Test(expected = WriterException.class)
+    public void exceptionOnCloseWriterTest() throws WriterException {
+        FileWriter writer = mock(FileWriter.class);
+
+        doThrow(WriterException.class).when(writer).close();
+        writer.close();
     }
 }

@@ -40,7 +40,10 @@ public class StateMachineLexer implements ILexer {
     }
 
     /**
+     * Read token from reader
+     *
      * @return new token from stream
+     * @throws LexerException if some troubles happen in reader or reader input are empty
      */
     @Override
     public IToken readToken() throws LexerException {
@@ -81,9 +84,9 @@ public class StateMachineLexer implements ILexer {
                 return token;
             }
         } catch (ReaderException e) {
-            throw new LexerException("Some troubles with reader " + e);
+            throw new LexerException("Some troubles with reader ", e);
         }
-        return null;
+        throw new LexerException("Empty input for lexer");
     }
 
     /**

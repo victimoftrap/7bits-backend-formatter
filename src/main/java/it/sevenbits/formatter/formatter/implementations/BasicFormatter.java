@@ -120,8 +120,10 @@ public class BasicFormatter implements IFormatter {
                 significantBefore = significantNow;
                 significantNow = false;
             }
-        } catch (ReaderException | WriterException e) {
-            throw new FormatterException(e);
+        } catch (ReaderException e) {
+            throw new FormatterException("Some troubles with reader", e);
+        } catch (WriterException e) {
+            throw new FormatterException("Some troubles with writer", e);
         }
     }
 }
