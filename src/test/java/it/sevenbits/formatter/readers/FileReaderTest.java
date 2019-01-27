@@ -18,10 +18,16 @@ public class FileReaderTest {
     }
 
     @Test
+    public void emptyFileHasNoNextSymbolTest() throws ReaderException {
+        try (FileReader reader = new FileReader("./src/test/resources/emptyfile")) {
+            assertFalse(reader.hasNext());
+        }
+    }
+
+    @Test(expected = ReaderException.class)
     public void readCharactersFromEmptyFileTest() throws ReaderException {
         try (FileReader reader = new FileReader("./src/test/resources/emptyfile")) {
-            assertEquals((char) -1, reader.read());
-            assertFalse(reader.hasNext());
+            reader.read();
         }
     }
 
