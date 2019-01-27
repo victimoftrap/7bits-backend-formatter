@@ -6,8 +6,8 @@ import it.sevenbits.formatter.readers.IReader;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.charset.Charset;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Implementation of IReader that reads characters from file
@@ -31,7 +31,7 @@ public class FileReader implements IReader, AutoCloseable {
     public FileReader(final String path) throws ReaderException {
         try {
             reader = Files.newBufferedReader(Paths.get(path), Charset.forName("UTF-8"));
-            currentSymbol = 0;
+            currentSymbol = reader.read();
         } catch (IOException e) {
             throw new ReaderException("Cannot create stream", e);
         }
@@ -51,12 +51,17 @@ public class FileReader implements IReader, AutoCloseable {
      * Read character in current position and increase position if string has more characters
      *
      * @return character in current position
+     * @throws ReaderException if stream are empty or reader cannot return next character
      */
     @Override
     public char read() throws ReaderException {
+        if (!hasNext()) {
+            throw new ReaderException("Stream are empty");
+        }
         try {
+            int temp = currentSymbol;
             currentSymbol = reader.read();
-            return (char) currentSymbol;
+            return (char) temp;
         } catch (IOException e) {
             throw new ReaderException("Cannot read symbol from file", e);
         }
