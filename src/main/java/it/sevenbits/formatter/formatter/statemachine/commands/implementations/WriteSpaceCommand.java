@@ -7,7 +7,7 @@ import it.sevenbits.formatter.formatter.statemachine.commands.IFormatterCommand;
 /**
  * Command for writing space in IWriter
  */
-public class WriteSpaceBeforeCommand implements IFormatterCommand {
+public class WriteSpaceCommand implements IFormatterCommand {
     private TokenContext context;
     private IFormatterCommand command;
     private char SPACE = ' ';
@@ -17,7 +17,7 @@ public class WriteSpaceBeforeCommand implements IFormatterCommand {
      *
      * @param context with current situation in formatter
      */
-    public WriteSpaceBeforeCommand(final TokenContext context) {
+    public WriteSpaceCommand(final TokenContext context) {
         this.context = context;
     }
 
@@ -27,7 +27,7 @@ public class WriteSpaceBeforeCommand implements IFormatterCommand {
      * @param context with IWriter and current IToken
      * @param command next command in chain
      */
-    public WriteSpaceBeforeCommand(final TokenContext context, final IFormatterCommand command) {
+    public WriteSpaceCommand(final TokenContext context, final IFormatterCommand command) {
         this.context = context;
         this.command = command;
     }

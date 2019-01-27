@@ -29,7 +29,7 @@ public class LexerCommandMap {
     public LexerCommandMap(final TokenBuilderContext context) {
         this.commandMap = new HashMap<>();
         LexerState releaseState = new LexerState("RELEASE");
-        LexerState defaultState = new LexerState("WAIT BEFORE");
+        LexerState waitBeforeState = new LexerState("WAIT BEFORE");
         LexerState waitAfterState = new LexerState("WAIT AFTER");
         LexerState curlyLeftBraceState = new LexerState("CURLY_LEFT_BRACE");
         LexerState curlyRightBraceState = new LexerState("CURLY_RIGHT_BRACE");
@@ -42,6 +42,10 @@ public class LexerCommandMap {
         LexerState multiLineCommentState = new LexerState("ASTERISK", "MULTILINE_COMMENT");
         LexerState lastAsteriskState = new LexerState("LAST_ASTERISK", multiLineCommentState.getType());
 
+        LexerState roundLeftBraceState = new LexerState("ROUND_LEFT_BRACE");
+        LexerState roundRightBraceState = new LexerState("ROUND_RIGHT_BRACE");
+        LexerState commaState = new LexerState("COMMA");
+
         ILexerCommand save = new SaveAnonymousCharCommand(context);
         ILexerCommand ignore = new IgnoreCommand(context);
         ILexerCommand add = new AddToBufferCommand(context);
@@ -51,13 +55,16 @@ public class LexerCommandMap {
         ILexerCommand recognizeSave = new RecognizeTypeCommand(context, save);
         ILexerCommand recognizeAdd = new RecognizeTypeCommand(context, add);
 
-        commandMap.put(new Pair<>(defaultState, ' '), ignore);
-        commandMap.put(new Pair<>(defaultState, '\n'), ignore);
-        commandMap.put(new Pair<>(defaultState, '\"'), recognizeAdd);
-        commandMap.put(new Pair<>(defaultState, ';'), recognizeAdd);
-        commandMap.put(new Pair<>(defaultState, '{'), recognizeAdd);
-        commandMap.put(new Pair<>(defaultState, '}'), recognizeAdd);
-        commandMap.put(new Pair<>(defaultState, null), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, ' '), ignore);
+        commandMap.put(new Pair<>(waitBeforeState, '\n'), ignore);
+        commandMap.put(new Pair<>(waitBeforeState, '\"'), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, ';'), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, '{'), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, '}'), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, null), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, ')'), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, '('), recognizeAdd);
+        commandMap.put(new Pair<>(waitBeforeState, ','), recognizeAdd);
 
         // sample text
         commandMap.put(new Pair<>(idState, ' '), ignore);
@@ -66,6 +73,9 @@ public class LexerCommandMap {
         commandMap.put(new Pair<>(idState, '{'), releaseSave);
         commandMap.put(new Pair<>(idState, '}'), releaseSave);
         commandMap.put(new Pair<>(idState, null), add);
+        commandMap.put(new Pair<>(idState, '('), releaseSave);
+        commandMap.put(new Pair<>(idState, ')'), releaseSave);
+        commandMap.put(new Pair<>(idState, ','), releaseSave);
 
         // ;
         commandMap.put(new Pair<>(semicolonState, ' '), ignore);
@@ -92,7 +102,7 @@ public class LexerCommandMap {
         commandMap.put(new Pair<>(stringLiteralState, '\"'), add);
 
         // comment translations
-        commandMap.put(new Pair<>(defaultState, '/'), add);
+        commandMap.put(new Pair<>(waitBeforeState, '/'), add);
 
         commandMap.put(new Pair<>(slashState, ' '), recognize);
         commandMap.put(new Pair<>(slashState, '\n'), recognize);
@@ -108,6 +118,21 @@ public class LexerCommandMap {
 
         commandMap.put(new Pair<>(lastAsteriskState, '/'), add);
         commandMap.put(new Pair<>(lastAsteriskState, null), add);
+
+        // (
+        commandMap.put(new Pair<>(roundLeftBraceState, ' '), ignore);
+        commandMap.put(new Pair<>(roundLeftBraceState, '\n'), ignore);
+        commandMap.put(new Pair<>(roundLeftBraceState, null), releaseSave);
+
+        // )
+        commandMap.put(new Pair<>(roundRightBraceState, ' '), ignore);
+        commandMap.put(new Pair<>(roundRightBraceState, '\n'), ignore);
+        commandMap.put(new Pair<>(roundRightBraceState, null), releaseSave);
+
+        // ,
+        commandMap.put(new Pair<>(commaState, ' '), ignore);
+        commandMap.put(new Pair<>(commaState, '\n'), ignore);
+        commandMap.put(new Pair<>(commaState, null), releaseSave);
     }
 
     /**

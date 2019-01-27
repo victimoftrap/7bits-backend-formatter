@@ -49,6 +49,7 @@ public class StateMachineFormatter implements IFormatter {
                 IToken token = lex.readToken();
                 FormatterState nextState = stateTransition.getNextState(currentState, token.getName());
                 context.setToken(token);
+
                 IFormatterCommand command = commandTransition.nextCommand(currentState, token.getName());
                 command.execute();
                 currentState = nextState;

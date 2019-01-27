@@ -24,6 +24,7 @@ public class FileLexerTest {
             assertEquals(new Token("ID OR KEYWORD", "x"), lexer.readToken());
             assertEquals(new Token("SEMICOLON", ";"), lexer.readToken());
             assertEquals(new Token("CURLY RIGHT BRACKET", "}"), lexer.readToken());
+            assertFalse(lexer.hasNext());
         } catch (ReaderException | LexerException e) {
             e.printStackTrace();
         }

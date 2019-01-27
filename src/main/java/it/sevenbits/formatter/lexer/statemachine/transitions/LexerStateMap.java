@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class LexerStateMap implements ILexerStateMap {
     private Map<Pair<LexerState, Character>, LexerState> stateMap;
-    private LexerState defaultState = new LexerState("WAIT BEFORE");
+    private LexerState waitBeforeState = new LexerState("WAIT BEFORE");
 
     /**
      * Create map of transitions
@@ -32,13 +32,23 @@ public class LexerStateMap implements ILexerStateMap {
         LexerState multiLineCommentState = new LexerState("ASTERISK", "MULTILINE_COMMENT");
         LexerState lastAsteriskState = new LexerState("LAST_ASTERISK", multiLineCommentState.getType());
 
-        stateMap.put(new Pair<>(defaultState, ' '), defaultState);
-        stateMap.put(new Pair<>(defaultState, '\n'), defaultState);
-        stateMap.put(new Pair<>(defaultState, '\"'), stringLiteralState);
-        stateMap.put(new Pair<>(defaultState, ';'), semicolonState);
-        stateMap.put(new Pair<>(defaultState, '{'), curlyLeftBraceState);
-        stateMap.put(new Pair<>(defaultState, '}'), curlyRightBraceState);
-        stateMap.put(new Pair<>(defaultState, null), idState);
+        LexerState roundLeftBraceState = new LexerState("ROUND_LEFT_BRACE");
+        LexerState roundRightBraceState = new LexerState("ROUND_RIGHT_BRACE");
+        LexerState commaState = new LexerState("COMMA");
+
+        stateMap.put(new Pair<>(waitBeforeState, ' '), waitBeforeState);
+        stateMap.put(new Pair<>(waitBeforeState, '\n'), waitBeforeState);
+        stateMap.put(new Pair<>(waitBeforeState, '\"'), stringLiteralState);
+        stateMap.put(new Pair<>(waitBeforeState, ';'), semicolonState);
+        stateMap.put(new Pair<>(waitBeforeState, '{'), curlyLeftBraceState);
+        stateMap.put(new Pair<>(waitBeforeState, '}'), curlyRightBraceState);
+        stateMap.put(new Pair<>(waitBeforeState, '/'), slashState);
+
+        stateMap.put(new Pair<>(waitBeforeState, '('), roundLeftBraceState);
+        stateMap.put(new Pair<>(waitBeforeState, ')'), roundRightBraceState);
+        stateMap.put(new Pair<>(waitBeforeState, ','), commaState);
+
+        stateMap.put(new Pair<>(waitBeforeState, null), idState);
         /*Насколько легально делать ключ или часть ключа null, чтобы сделать какое-то значение по-умаолчанию?
          * Долго думал над какими-нибудь другими возможными решениями, но ничего дельного из них не вышло.*/
 
@@ -49,6 +59,9 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(idState, '{'), releaseState);
         stateMap.put(new Pair<>(idState, '}'), releaseState);
         stateMap.put(new Pair<>(idState, null), idState);
+        stateMap.put(new Pair<>(idState, '('), releaseState);
+        stateMap.put(new Pair<>(idState, ')'), releaseState);
+        stateMap.put(new Pair<>(idState, ','), releaseState);
 
         // ;
         stateMap.put(new Pair<>(semicolonState, ' '), waitAfterState);
@@ -75,8 +88,6 @@ public class LexerStateMap implements ILexerStateMap {
         stateMap.put(new Pair<>(stringLiteralState, '\"'), waitAfterState);
 
         // comments transitions
-        stateMap.put(new Pair<>(defaultState, '/'), slashState);
-
         stateMap.put(new Pair<>(slashState, ' '), waitAfterState);
         stateMap.put(new Pair<>(slashState, '\n'), waitAfterState);
         stateMap.put(new Pair<>(slashState, null), releaseState);
@@ -91,6 +102,21 @@ public class LexerStateMap implements ILexerStateMap {
 
         stateMap.put(new Pair<>(lastAsteriskState, '/'), waitAfterState);
         stateMap.put(new Pair<>(lastAsteriskState, null), multiLineCommentState);
+
+        // (
+        stateMap.put(new Pair<>(roundLeftBraceState, ' '), waitAfterState);
+        stateMap.put(new Pair<>(roundLeftBraceState, '\n'), waitAfterState);
+        stateMap.put(new Pair<>(roundLeftBraceState, null), releaseState);
+
+        // )
+        stateMap.put(new Pair<>(roundRightBraceState, ' '), waitAfterState);
+        stateMap.put(new Pair<>(roundRightBraceState, '\n'), waitAfterState);
+        stateMap.put(new Pair<>(roundRightBraceState, null), releaseState);
+
+        // ,
+        stateMap.put(new Pair<>(commaState, ' '), waitAfterState);
+        stateMap.put(new Pair<>(commaState, '\n'), waitAfterState);
+        stateMap.put(new Pair<>(commaState, null), releaseState);
     }
 
     /**
@@ -98,7 +124,7 @@ public class LexerStateMap implements ILexerStateMap {
      */
     @Override
     public LexerState getStartState() {
-        return defaultState;
+        return waitBeforeState;
     }
 
     /**

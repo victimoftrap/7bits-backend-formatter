@@ -70,6 +70,58 @@ public class StateMachineFormatterTest {
         assertEquals(str1After, writer.convertToString());
     }
 
+    @Test
+    public void normalCodeTest() throws ReaderException, FormatterException {
+        IFormatter formatter = new StateMachineFormatter(new LexerFactory());
+        StringWriter writer = new StringWriter();
+        String str1Before =
+                "public class Nelly{\n\nprivate" +
+                " String word;\n" +
+                "public Nelly(String word){word eq word;}\n" +
+                "public String say(){return \"Nelly said $word, and it right\"; //and nothing happen\n" +
+                "}\n" +
+                "public void nothing(){}\n" +
+                "}";
+
+        String str1After =
+                "public class Nelly {\n" +
+                "    private String word;\n" +
+                "    public Nelly (String word) {\n" +
+                "        word eq word;\n" +
+                "    }\n" +
+                "    public String say () {\n" +
+                "        return \"Nelly said $word, and it right\"; //and nothing happen\n" +
+                "    }\n" +
+                "    public void nothing () {\n" +
+                "    }\n" +
+                "}";
+        formatter.format(new StringReader(str1Before), writer);
+
+        assertEquals(str1After, writer.convertToString());
+    }
+
+    @Test
+    public void functionWithTwoParamsTest() throws ReaderException, FormatterException {
+        IFormatter formatter = new StateMachineFormatter(new LexerFactory());
+        StringWriter writer = new StringWriter();
+
+        String str1Before =
+                "public   boolean      compare(String   s1, String s2){return s1\n" +
+                "equals s2;\n" +
+                "}\n" +
+                "\n" +
+                "compare(\"Kotlin\",   \"Ceylon\");";
+        String str1After =
+                "public boolean compare (String s1, String s2) {\n" +
+                "    return s1 equals s2;\n" +
+                "}\n" +
+                "compare (\"Kotlin\", \"Ceylon\");";
+
+        formatter.format(new StringReader(str1Before), writer);
+
+        assertEquals(str1After, writer.convertToString());
+    }
+
     @Test(expected = FormatterException.class)
     public void exceptionOnWriterTest() throws WriterException, ReaderException, FormatterException {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());

@@ -112,6 +112,57 @@ public class StateMachineLexerTest {
         compareTokens(tokens, state);
     }
 
+    @Test
+    public void normalCodeTest() throws ReaderException, LexerException {
+        ILexer lexer = new StateMachineLexer(new StringReader(
+                "public void g(String name){sout(\"Hello, $name!\");}"));
+
+        IToken token00 = new Token("ID", "public");
+        IToken token01 = new Token("ID", "void");
+        IToken token02 = new Token("ID", "g");
+        IToken token03 = new Token("ROUND_LEFT_BRACE", "(");
+        IToken token04 = new Token("ID", "String");
+        IToken token05 = new Token("ID", "name");
+        IToken token06 = new Token("ROUND_RIGHT_BRACE", ")");
+        IToken token07 = new Token("CURLY_LEFT_BRACE", "{");
+        IToken token08 = new Token("ID", "sout");
+        IToken token09 = new Token("ROUND_LEFT_BRACE", "(");
+        IToken token10 = new Token("STRING", "\"Hello, $name!\"");
+        IToken token11 = new Token("ROUND_RIGHT_BRACE", ")");
+        IToken token12 = new Token("SEMICOLON", ";");
+        IToken token13 = new Token("CURLY_RIGHT_BRACE", "}");
+        List<IToken> tokens = new ArrayList<>();
+        Collections.addAll(tokens, token00, token01, token02, token03, token04, token05,
+                token06, token07, token08, token09, token10, token11, token12, token13);
+
+        compareTokens(tokens, lexer);
+    }
+
+    @Test
+    public void codeWithCommasTest() throws ReaderException, LexerException {
+        ILexer lexer = new StateMachineLexer(new StringReader(
+                "concat(s1, s2){return s1 AND s2;}"));
+
+        IToken token00 = new Token("ID", "concat");
+        IToken token01 = new Token("ROUND_LEFT_BRACE", "(");
+        IToken token02 = new Token("ID", "s1");
+        IToken token03 = new Token("COMMA", ",");
+        IToken token04 = new Token("ID", "s2");
+        IToken token05 = new Token("ROUND_RIGHT_BRACE", ")");
+        IToken token06 = new Token("CURLY_LEFT_BRACE", "{");
+        IToken token07 = new Token("ID", "return");
+        IToken token08 = new Token("ID", "s1");
+        IToken token09 = new Token("ID", "AND");
+        IToken token10 = new Token("ID", "s2");
+        IToken token11 = new Token("SEMICOLON", ";");
+        IToken token12 = new Token("CURLY_RIGHT_BRACE", "}");
+        List<IToken> tokens = new ArrayList<>();
+        Collections.addAll(tokens, token00, token01, token02, token03, token04, token05,
+                token06, token07, token08, token09, token10, token11, token12);
+
+        compareTokens(tokens, lexer);
+    }
+
     @Test(expected = LexerException.class)
     public void exceptionOnReaderTest() throws LexerException, ReaderException {
         IReader reader = mock(IReader.class);
