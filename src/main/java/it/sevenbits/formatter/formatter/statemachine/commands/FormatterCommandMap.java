@@ -59,6 +59,8 @@ public class FormatterCommandMap {
         commandMap.put(new Pair<>(writeState, semicolonState.toString()), addToken);
         commandMap.put(new Pair<>(writeState, curlyRightBraceState.toString()), decNewLineToken);
 
+
+        commandMap.put(new Pair<>(writeState, roundLeftBraceState.toString()), addToken);
         commandMap.put(new Pair<>(writeState, roundRightBraceState.toString()), addToken);
         commandMap.put(new Pair<>(writeState, commaState.toString()), addToken);
 

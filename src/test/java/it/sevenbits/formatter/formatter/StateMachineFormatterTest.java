@@ -19,8 +19,13 @@ public class StateMachineFormatterTest {
     public void stringLiteralTest() throws FormatterException, ReaderException {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
+
         String str1Before = "func{x;\"literal\";}";
-        String str1After = "func {\n    x;\n    \"literal\";\n}";
+        String str1After =
+                "func {\n" +
+                "    x;\n" +
+                "    \"literal\";\n" +
+                "}";
         formatter.format(new StringReader(str1Before), writer);
 
         assertEquals(str1After, writer.convertToString());
@@ -30,8 +35,13 @@ public class StateMachineFormatterTest {
     public void inlineCommentTest() throws FormatterException, ReaderException {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
+
         String str1Before = "func{x;\"literal\"; // inline \n }";
-        String str1After = "func {\n    x;\n    \"literal\"; // inline \n}";
+        String str1After =
+                "func {\n" +
+                "    x;\n" +
+                "    \"literal\"; // inline \n" +
+                "}";
         formatter.format(new StringReader(str1Before), writer);
 
         assertEquals(str1After, writer.convertToString());
@@ -41,8 +51,14 @@ public class StateMachineFormatterTest {
     public void inlineCommentBeforeTest() throws FormatterException, ReaderException {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
+
         String str1Before = "   // pre \n  func{x;\"literal\";  }";
-        String str1After = "// pre \nfunc {\n    x;\n    \"literal\";\n}";
+        String str1After =
+                "// pre \n" +
+                "func {\n" +
+                "    x;\n" +
+                "    \"literal\";\n" +
+                "}";
         formatter.format(new StringReader(str1Before), writer);
 
         assertEquals(str1After, writer.convertToString());
@@ -52,8 +68,13 @@ public class StateMachineFormatterTest {
     public void inlineCommentAfterTest() throws FormatterException, ReaderException {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
+
         String str1Before = "func{x;\"literal\";  }    // post  ";
-        String str1After = "func {\n    x;\n    \"literal\";\n} // post  ";
+        String str1After =
+                "func {\n" +
+                "    x;\n" +
+                "    \"literal\";\n" +
+                "} // post  ";
         formatter.format(new StringReader(str1Before), writer);
 
         assertEquals(str1After, writer.convertToString());
@@ -64,7 +85,12 @@ public class StateMachineFormatterTest {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
         String str1Before = "func{x;   /* just\njust a comment*/  \"literal\";}";
-        String str1After = "func {\n    x;\n    /* just\n    just a comment*/\n    \"literal\";\n}";
+        String str1After =
+                "func {\n" +
+                "    x;\n" +
+                "    /* just\n    just a comment*/\n" +
+                "    \"literal\";\n" +
+                "}";
         formatter.format(new StringReader(str1Before), writer);
 
         assertEquals(str1After, writer.convertToString());
@@ -86,13 +112,13 @@ public class StateMachineFormatterTest {
         String str1After =
                 "public class Nelly {\n" +
                 "    private String word;\n" +
-                "    public Nelly (String word) {\n" +
+                "    public Nelly(String word) {\n" +
                 "        word eq word;\n" +
                 "    }\n" +
-                "    public String say () {\n" +
+                "    public String say() {\n" +
                 "        return \"Nelly said $word, and it right\"; //and nothing happen\n" +
                 "    }\n" +
-                "    public void nothing () {\n" +
+                "    public void nothing() {\n" +
                 "    }\n" +
                 "}";
         formatter.format(new StringReader(str1Before), writer);
@@ -106,16 +132,34 @@ public class StateMachineFormatterTest {
         StringWriter writer = new StringWriter();
 
         String str1Before =
-                "public   boolean      compare(String   s1, String s2){return s1\n" +
+                "    public   boolean      compare(String   s1, String s2){return s1\n" +
                 "equals s2;\n" +
                 "}\n" +
                 "\n" +
-                "compare(\"Kotlin\",   \"Ceylon\");";
+                "compare   (\"Kotlin\",   \"Ceylon\");";
+
         String str1After =
-                "public boolean compare (String s1, String s2) {\n" +
+                "public boolean compare(String s1, String s2) {\n" +
                 "    return s1 equals s2;\n" +
                 "}\n" +
-                "compare (\"Kotlin\", \"Ceylon\");";
+                "compare(\"Kotlin\", \"Ceylon\");";
+
+        formatter.format(new StringReader(str1Before), writer);
+
+        assertEquals(str1After, writer.convertToString());
+    }
+
+    @Test
+    public void functionWithoutParamsTest() throws ReaderException, FormatterException {
+        IFormatter formatter = new StateMachineFormatter(new LexerFactory());
+        StringWriter writer = new StringWriter();
+
+        String str1Before = "int meaningOfEverything(){return 42;}";
+
+        String str1After =
+                "int meaningOfEverything() {\n" +
+                        "    return 42;\n" +
+                        "}";
 
         formatter.format(new StringReader(str1Before), writer);
 
