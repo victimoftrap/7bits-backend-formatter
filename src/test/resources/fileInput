@@ -1,0 +1,73 @@
+/**
+ * Class that implements IFormatter by state machine
+ */
+
+
+public class StateMachineFormatter implements IFormatter
+{
+    private ILexerFactory lexerFactory;
+ private TokenContext context;
+    private FormatterStateTransition stateTransition;
+            private
+            FormatterCommandTransition
+            commandTransition;
+
+
+
+
+    /**
+     * Create formatter state machine
+     */
+    public StateMachineFormatter(final ILexerFactory lexerFactory)
+    {
+        this.lexerFactory = lexerFactory;this.context = new TokenContext();
+        this.stateTransition = new FormatterStateTransition(new FormatterStateMap());
+        this.commandTransition = new FormatterCommandTransition(new FormatterCommandMap(context));
+
+
+
+    }
+
+    public void format(final IReader reader,
+     final IWriter writer) throws FormatterException
+    {
+        context.setWriter(writer);
+        ILexer lex = lexerFactory.getLexer("STATE", reader);
+        FormatterState currentState = stateTransition.getStartState();
+
+        try
+        {
+            while (   lex.hasNext(
+            )  )
+            {
+                IToken token = lex.readToken();
+                    FormatterState nextState = stateTransition.getNextState(currentState, token.getName());
+                context.setToken(token);
+
+
+
+                  IFormatterCommand command = commandTransition.nextCommand(currentState, token.getName());
+                     command.execute();
+
+
+                       currentState = nextState;
+            }
+        } catch (LexerException e)
+        {
+            throw new FormatterException("Some troubles with statemachine", e);
+        } catch (WriterException e)
+        {
+            throw new
+            FormatterException("Some troubles with writer stream", e);
+        }
+    }
+
+
+
+}
+
+
+
+
+
+

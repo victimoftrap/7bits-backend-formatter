@@ -36,7 +36,9 @@ public class StateMachineFormatterTest {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
 
-        String str1Before = "func{x;\"literal\"; // inline \n }";
+        String str1Before =
+                "func{x;\"literal\"; // inline " +
+                "\n }";
         String str1After =
                 "func {\n" +
                 "    x;\n" +
@@ -52,7 +54,9 @@ public class StateMachineFormatterTest {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
 
-        String str1Before = "   // pre \n  func{x;\"literal\";  }";
+        String str1Before =
+                "   // pre \n" +
+                "  func{x;\"literal\";  }";
         String str1After =
                 "// pre \n" +
                 "func {\n" +
@@ -84,13 +88,35 @@ public class StateMachineFormatterTest {
     public void multilineCommentTest() throws FormatterException, ReaderException {
         IFormatter formatter = new StateMachineFormatter(new LexerFactory());
         StringWriter writer = new StringWriter();
-        String str1Before = "func{x;   /* just\njust a comment*/  \"literal\";}";
+        String str1Before =
+                "func{x;   /* just\n" +
+                "    just a comment*/  \"literal\";}";
         String str1After =
                 "func {\n" +
                 "    x;\n" +
-                "    /* just\n    just a comment*/\n" +
+                "    /* just\n" +
+                "    just a comment*/\n" +
                 "    \"literal\";\n" +
                 "}";
+        formatter.format(new StringReader(str1Before), writer);
+
+        assertEquals(str1After, writer.convertToString());
+    }
+
+    @Test
+    public void multilineCommentNonNormalizedTest() throws FormatterException, ReaderException {
+        IFormatter formatter = new StateMachineFormatter(new LexerFactory());
+        StringWriter writer = new StringWriter();
+        String str1Before =
+                "func{x;   /* just\n" +
+                " just a comment*/  \"literal\";}";
+        String str1After =
+                        "func {\n" +
+                        "    x;\n" +
+                        "    /* just\n" +
+                        " just a comment*/\n" +
+                        "    \"literal\";\n" +
+                        "}";
         formatter.format(new StringReader(str1Before), writer);
 
         assertEquals(str1After, writer.convertToString());
@@ -157,7 +183,7 @@ public class StateMachineFormatterTest {
         String str1Before = "int meaningOfEverything(){return 42;}";
 
         String str1After =
-                "int meaningOfEverything() {\n" +
+                        "int meaningOfEverything() {\n" +
                         "    return 42;\n" +
                         "}";
 

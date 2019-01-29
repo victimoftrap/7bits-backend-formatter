@@ -32,17 +32,6 @@ public class AddTokenCommand implements IFormatterCommand {
     }
 
     /**
-     * Remade indent if token contains \n symbol
-     */
-    private void madeIndent() throws WriterException {
-        for (int i = 0; i < context.getIndentLevel(); i++) {
-            for (int j = 0; j < context.getIndentSize(); j++) {
-                context.getWriter().write(' ');
-            }
-        }
-    }
-
-    /**
      * Run command
      *
      * @throws WriterException it something goes wrong
@@ -51,9 +40,6 @@ public class AddTokenCommand implements IFormatterCommand {
     public void execute() throws WriterException {
         for (char c : context.getToken().getLexeme().toCharArray()) {
             context.getWriter().write(c);
-            if (c == '\n') {
-                madeIndent();
-            }
         }
 
         if (nextInChain != null) {
