@@ -16,12 +16,13 @@ import it.sevenbits.formatter.lexer.LexerException;
 public class CleverFormatter implements IFormatter {
     private final int INDENT_LENGTH = 4;
 
-    private final String ID_OR_KEYWORD = "ID OR KEYWORD";
-    private final String CURLY_LEFT_BRACKET = "CURLY LEFT BRACKET";
-    private final String CURLY_RIGHT_BRACKET = "CURLY RIGHT BRACKET";
-    private final String ROUND_LEFT_BRACKET = "ROUND LEFT BRACKET";
-    private final String ROUND_RIGHT_BRACKET = "ROUND RIGHT BRACKET";
+    private final String ID = "ID";
+    private final String CURLY_LEFT_BRACE = "CURLY_LEFT_BRACE";
+    private final String CURLY_RIGHT_BRACE = "CURLY_RIGHT_BRACE";
+    private final String ROUND_LEFT_BRACE = "ROUND_LEFT_BRACE";
+    private final String ROUND_RIGHT_BRACE = "ROUND_RIGHT_BRACE";
     private final String SEMICOLON = "SEMICOLON";
+    private final String STRING_LITERAL = "STRING_LITERAL";
     private final char SPACE = ' ';
     private final char CARRIAGE_RETURN = '\n';
 
@@ -32,9 +33,9 @@ public class CleverFormatter implements IFormatter {
     private boolean needNewLine;
 
     /**
-     * Constructor of statemachine-based statemachine
+     * Constructor of statemachine-based formatter
      *
-     * @param lexerFactory that can create statemachine by some reader
+     * @param lexerFactory that can create lexer by some reader
      */
     public CleverFormatter(final ILexerFactory lexerFactory) {
         this.lexerFactory = lexerFactory;
@@ -83,7 +84,7 @@ public class CleverFormatter implements IFormatter {
      *
      * @param reader - instance that contains code for formatting
      * @param writer - instance where we would write formatted code
-     * @throws FormatterException if some troubles with statemachine or writer happen
+     * @throws FormatterException if some troubles with lexer or writer happen
      */
     @Override
     public void format(final IReader reader, final IWriter writer) throws FormatterException {
@@ -96,7 +97,7 @@ public class CleverFormatter implements IFormatter {
             while (lexer.hasNext()) {
                 IToken token = lexer.readToken();
 
-                if (token.getName().equals(CURLY_LEFT_BRACKET)) {
+                if (token.getName().equals(CURLY_LEFT_BRACE)) {
                     indentLevel++;
                     writer.write(SPACE);
                     writeLexeme(writer, token.getLexeme());
@@ -108,19 +109,19 @@ public class CleverFormatter implements IFormatter {
                     needNewLine = true;
                     significantNow = true;
                 }
-                if (token.getName().equals(CURLY_RIGHT_BRACKET)) {
+                if (token.getName().equals(CURLY_RIGHT_BRACE)) {
                     indentLevel--;
                     makeNewLine(writer);
                     writeLexeme(writer, token.getLexeme());
                     needNewLine = true;
                     significantNow = true;
                 }
-                if (token.getName().equals(ROUND_LEFT_BRACKET)) {
+                if (token.getName().equals(ROUND_LEFT_BRACE)) {
                     writeLexeme(writer, token.getLexeme());
                     needNewLine = false;
                     significantNow = true;
                 }
-                if (token.getName().equals(ROUND_RIGHT_BRACKET)) {
+                if (token.getName().equals(ROUND_RIGHT_BRACE)) {
                     writeLexeme(writer, token.getLexeme());
                     needNewLine = false;
                     significantNow = true;

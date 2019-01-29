@@ -13,17 +13,17 @@ public class FileLexerTest {
     public void test() {
         try (FileReader reader = new FileReader("./src/test/resources/source")) {
             Lexer lexer = new Lexer(reader);
-            assertEquals(new Token("ID OR KEYWORD", "fun"), lexer.readToken());
-            assertEquals(new Token("ID OR KEYWORD", "someFunc"), lexer.readToken());
-            assertEquals(new Token("ROUND LEFT BRACKET", "("), lexer.readToken());
-            assertEquals(new Token("ID OR KEYWORD", "char"), lexer.readToken());
-            assertEquals(new Token("ID OR KEYWORD", "x"), lexer.readToken());
-            assertEquals(new Token("ROUND RIGHT BRACKET", ")"), lexer.readToken());
-            assertEquals(new Token("CURLY LEFT BRACKET", "{"), lexer.readToken());
-            assertEquals(new Token("ID OR KEYWORD", "return"), lexer.readToken());
-            assertEquals(new Token("ID OR KEYWORD", "x"), lexer.readToken());
+            assertEquals(new Token("ID", "fun"), lexer.readToken());
+            assertEquals(new Token("ID", "someFunc"), lexer.readToken());
+            assertEquals(new Token("ROUND_LEFT_BRACE", "("), lexer.readToken());
+            assertEquals(new Token("ID", "char"), lexer.readToken());
+            assertEquals(new Token("ID", "x"), lexer.readToken());
+            assertEquals(new Token("ROUND_RIGHT_BRACE", ")"), lexer.readToken());
+            assertEquals(new Token("CURLY_LEFT_BRACE", "{"), lexer.readToken());
+            assertEquals(new Token("ID", "return"), lexer.readToken());
+            assertEquals(new Token("ID", "x"), lexer.readToken());
             assertEquals(new Token("SEMICOLON", ";"), lexer.readToken());
-            assertEquals(new Token("CURLY RIGHT BRACKET", "}"), lexer.readToken());
+            assertEquals(new Token("CURLY_RIGHT_BRACE", "}"), lexer.readToken());
             assertFalse(lexer.hasNext());
         } catch (ReaderException | LexerException e) {
             e.printStackTrace();

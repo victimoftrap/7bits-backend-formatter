@@ -14,17 +14,22 @@ import java.util.HashMap;
  * Class of lexical analyzer
  */
 public class Lexer implements ILexer {
-    private final char CURLY_LEFT_BRACKET = '{';
-    private final char CURLY_RIGHT_BRACKET = '}';
-    private final char ROUND_LEFT_BRACKET = '(';
-    private final char ROUND_RIGHT_BRACKET = ')';
-    private final char SQUARE_LEFT_BRACKET = '[';
-    private final char SQUARE_RIGHT_BRACKET = ']';
-    private final char SEMICOLON = ';';
-    private final char SPACE = ' ';
-    private final char CARRIAGE_RETURN = '\n';
-    private final char QUOTATION_MARK = '\"';
-    private final char APOSTROPHE = '\'';
+    private final char CHAR_CURLY_LEFT_BRACE = '{';
+    private final char CHAR_CURLY_RIGHT_BRACE = '}';
+    private final char CHAR_ROUND_LEFT_BRACE = '(';
+    private final char CHAR_ROUND_RIGHT_BRACE = ')';
+    private final char CHAR_SEMICOLON = ';';
+    private final char CHAR_SPACE = ' ';
+    private final char CHAR_CARRIAGE_RETURN = '\n';
+    private final char CHAR_QUOTATION_MARK = '\"';
+
+    private final String ID = "ID";
+    private final String CURLY_LEFT_BRACE = "CURLY_LEFT_BRACE";
+    private final String CURLY_RIGHT_BRACE = "CURLY_RIGHT_BRACE";
+    private final String ROUND_LEFT_BRACE = "ROUND_LEFT_BRACE";
+    private final String ROUND_RIGHT_BRACE = "ROUND_RIGHT_BRACE";
+    private final String SEMICOLON = "SEMICOLON";
+    private final String STRING_LITERAL = "STRING_LITERAL";
 
     private IReader reader;
     private Map<Character, IToken> separators;
@@ -49,11 +54,11 @@ public class Lexer implements ILexer {
     public Lexer(final IReader reader) {
         this.reader = reader;
         separators = new HashMap<>();
-        separators.put(CURLY_LEFT_BRACKET, new Token("CURLY LEFT BRACKET", "{"));
-        separators.put(CURLY_RIGHT_BRACKET, new Token("CURLY RIGHT BRACKET", "}"));
-        separators.put(ROUND_LEFT_BRACKET, new Token("ROUND LEFT BRACKET", "("));
-        separators.put(ROUND_RIGHT_BRACKET, new Token("ROUND RIGHT BRACKET", ")"));
-        separators.put(SEMICOLON, new Token("SEMICOLON", ";"));
+        separators.put(CHAR_CURLY_LEFT_BRACE, new Token(CURLY_LEFT_BRACE, "{"));
+        separators.put(CHAR_CURLY_RIGHT_BRACE, new Token(CURLY_RIGHT_BRACE, "}"));
+        separators.put(CHAR_ROUND_LEFT_BRACE, new Token(ROUND_LEFT_BRACE, "("));
+        separators.put(CHAR_ROUND_RIGHT_BRACE, new Token(ROUND_RIGHT_BRACE, ")"));
+        separators.put(CHAR_SEMICOLON, new Token(SEMICOLON, ";"));
     }
 
     /**
@@ -67,7 +72,7 @@ public class Lexer implements ILexer {
         if (token != null) {
             return token;
         } else {
-            return new Token("ID OR KEYWORD", accumulator.toString());
+            return new Token(ID, accumulator.toString());
         }
     }
 
@@ -110,8 +115,8 @@ public class Lexer implements ILexer {
 
                 currentChar = reader.read();
 
-                if (currentChar == SPACE || currentChar == CARRIAGE_RETURN) {
-                    while (hasNext() && (currentChar == SPACE || currentChar == CARRIAGE_RETURN)) {
+                if (currentChar == CHAR_SPACE || currentChar == CHAR_CARRIAGE_RETURN) {
+                    while (hasNext() && (currentChar == CHAR_SPACE || currentChar == CHAR_CARRIAGE_RETURN)) {
                         currentChar = reader.read();
                     }
                     if (sb.length() != 0) {
